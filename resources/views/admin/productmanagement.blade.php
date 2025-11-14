@@ -614,7 +614,7 @@
         <!-- Toolbar below header -->
         <div class="actions-toolbar">
             <button class="btn-add-product" onclick="openAddProductModal()">
-                <i class="bi bi-plus-circle"></i> Tambah Produk
+                <i class="bi bi-plus-circle"></i> Add Product
             </button>
         </div>
 
@@ -653,7 +653,7 @@
                                     </td>
                                 </tr>
                             @empty
-                                <tr><td colspan="6" style="text-align:center;color:#888;">Belum ada produk Pet Food.</td></tr>
+                                <tr><td colspan="6" style="text-align:center;color:#888;">No Pet Food products yet.</td></tr>
                             @endforelse
                         @endisset
                     </tbody>
@@ -697,7 +697,7 @@
                                     </td>
                                 </tr>
                             @empty
-                                <tr><td colspan="6" style="text-align:center;color:#888;">Belum ada produk Supplies.</td></tr>
+                                <tr><td colspan="6" style="text-align:center;color:#888;">No Supplies products yet.</td></tr>
                             @endforelse
                         @endisset
                     </tbody>
@@ -741,7 +741,7 @@
                                     </td>
                                 </tr>
                             @empty
-                                <tr><td colspan="6" style="text-align:center;color:#888;">Belum ada produk Vitamin.</td></tr>
+                                <tr><td colspan="6" style="text-align:center;color:#888;">No Vitamin products yet.</td></tr>
                             @endforelse
                         @endisset
                     </tbody>
@@ -756,7 +756,7 @@
 <div class="modal-overlay" id="addProductModal">
     <div class="modal-container">
         <div class="modal-header">
-            <h2 class="modal-title">Tambah Produk</h2>
+            <h2 class="modal-title">Add Product</h2>
             <button class="modal-close" onclick="closeAddModal()">
                 <i class="bi bi-x"></i>
             </button>
@@ -764,17 +764,17 @@
         <div class="modal-body">
             <form id="addProductForm">
                 <div class="form-group">
-                    <label for="addProductName" class="form-label">Nama Produk</label>
-                    <input type="text" id="addProductName" class="form-input" placeholder="Nama produk" required>
+                    <label for="addProductName" class="form-label">Product Name</label>
+                    <input type="text" id="addProductName" class="form-input" placeholder="Product name" required>
                 </div>
                 <div class="form-group">
                     <label for="addProductSku" class="form-label">SKU</label>
-                    <input type="text" id="addProductSku" class="form-input" placeholder="SKU unik" required>
+                    <input type="text" id="addProductSku" class="form-input" placeholder="Unique SKU" required>
                 </div>
                 <div class="form-group">
-                    <label for="addProductCategory" class="form-label">Kategori</label>
+                    <label for="addProductCategory" class="form-label">Category</label>
                     <select id="addProductCategory" class="form-select" required>
-                        <option value="">Pilih kategori</option>
+                        <option value="">Select a category</option>
                         <option value="Cat Food">Cat Food</option>
                         <option value="Dog Food">Dog Food</option>
                         <option value="Supplies">Supplies</option>
@@ -782,12 +782,12 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="addProductPrice" class="form-label">Harga</label>
+                    <label for="addProductPrice" class="form-label">Price</label>
                     <input type="text" id="addProductPrice" class="form-input" placeholder="Rp. 0" required>
                 </div>
                 <div class="form-group">
-                    <label for="addProductStock" class="form-label">Stok</label>
-                    <input type="number" id="addProductStock" class="form-input" placeholder="Stok" min="0" required>
+                    <label for="addProductStock" class="form-label">Stock</label>
+                    <input type="number" id="addProductStock" class="form-input" placeholder="Stock" min="0" required>
                 </div>
                 <div class="form-group">
                     <label for="addProductStatus" class="form-label">Status</label>
@@ -798,18 +798,18 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="addProductDescription" class="form-label">Deskripsi</label>
-                    <textarea id="addProductDescription" class="form-input" rows="3" placeholder="Deskripsi (opsional)"></textarea>
+                    <label for="addProductDescription" class="form-label">Description</label>
+                    <textarea id="addProductDescription" class="form-input" rows="3" placeholder="Description (optional)"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="addProductImage" class="form-label">Gambar</label>
+                    <label for="addProductImage" class="form-label">Image</label>
                     <input type="file" id="addProductImage" class="form-input" accept="image/*">
                 </div>
             </form>
         </div>
         <div class="modal-footer">
-            <button class="modal-btn btn-cancel" onclick="closeAddModal()">Batal</button>
-            <button class="modal-btn btn-save" onclick="submitAddProduct()">Tambah Produk</button>
+            <button class="modal-btn btn-cancel" onclick="closeAddModal()">Cancel</button>
+            <button class="modal-btn btn-save" onclick="submitAddProduct()">Add Product</button>
         </div>
     </div>
 </div>
@@ -818,7 +818,7 @@
 <div class="modal-overlay" id="editProductModal">
     <div class="modal-container">
         <div class="modal-header">
-            <h2 class="modal-title">Edit Produk</h2>
+            <h2 class="modal-title">Edit Product</h2>
             <button class="modal-close" onclick="closeEditModal()">
                 <i class="bi bi-x"></i>
             </button>
@@ -827,7 +827,7 @@
             <form id="editProductForm">
                 <input type="hidden" id="editProductId">
                 <div class="form-group">
-                    <label for="editProductName" class="form-label">Nama Produk</label>
+                    <label for="editProductName" class="form-label">Product Name</label>
                     <input type="text" id="editProductName" class="form-input" required>
                 </div>
                 <div class="form-group">
@@ -835,7 +835,7 @@
                     <input type="text" id="editProductSku" class="form-input" required>
                 </div>
                 <div class="form-group">
-                    <label for="editProductCategory" class="form-label">Kategori</label>
+                    <label for="editProductCategory" class="form-label">Category</label>
                     <select id="editProductCategory" class="form-select" required>
                         <option value="Cat Food">Cat Food</option>
                         <option value="Dog Food">Dog Food</option>
@@ -844,11 +844,11 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="editProductPrice" class="form-label">Harga</label>
+                    <label for="editProductPrice" class="form-label">Price</label>
                     <input type="text" id="editProductPrice" class="form-input" required>
                 </div>
                 <div class="form-group">
-                    <label for="editProductStock" class="form-label">Stok</label>
+                    <label for="editProductStock" class="form-label">Stock</label>
                     <input type="number" id="editProductStock" class="form-input" min="0" required>
                 </div>
                 <div class="form-group">
@@ -860,18 +860,18 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="editProductDescription" class="form-label">Deskripsi</label>
+                    <label for="editProductDescription" class="form-label">Description</label>
                     <textarea id="editProductDescription" class="form-input" rows="3"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="editProductImage" class="form-label">Gambar</label>
+                    <label for="editProductImage" class="form-label">Image</label>
                     <input type="file" id="editProductImage" class="form-input" accept="image/*">
                 </div>
             </form>
         </div>
         <div class="modal-footer">
-            <button class="modal-btn btn-cancel" onclick="closeEditModal()">Batal</button>
-            <button class="modal-btn btn-save" onclick="submitEditProduct()">Simpan Perubahan</button>
+            <button class="modal-btn btn-cancel" onclick="closeEditModal()">Cancel</button>
+            <button class="modal-btn btn-save" onclick="submitEditProduct()">Save Changes</button>
         </div>
     </div>
 </div>
@@ -879,27 +879,27 @@
 <div class="notification-modal" id="notificationModal">
     <div class="notification-content">
         <div class="notification-header">
-            <h3>Notifikasi</h3>
+            <h3>Notifications</h3>
             <button onclick="toggleNotificationModal()">&times;</button>
         </div>
 
         <div id="notificationList">
             <div class="notification-item unread">
-                <h4>Booking Baru</h4>
-                <p>User melakukan booking hari ini</p>
+                <h4>New Booking</h4>
+                <p>A user made a booking today</p>
             </div>
             <div class="notification-item unread">
-                <h4>Pembayaran Diterima</h4>
-                <p>Transaksi #123 berhasil</p>
+                <h4>Payment Received</h4>
+                <p>Transaction #123 successful</p>
             </div>
             <div class="notification-item">
-                <h4>Testimoni Baru</h4>
-                <p>Ada ulasan dari pelanggan</p>
+                <h4>New Testimonial</h4>
+                <p>A customer left a review</p>
             </div>
         </div>
 
         <div class="notification-footer">
-            <button onclick="markAllAsRead()">Tandai Semua Dibaca</button>
+            <button onclick="markAllAsRead()">Mark All as Read</button>
         </div>
     </div>
 </div>
@@ -975,13 +975,13 @@
                 
                 if (action === 'edit') {
                     try {
-                        // Ambil data lengkap produk dari API agar field seperti SKU/description terisi
+                        // Fetch full product details from API so fields like SKU/description are filled
                         const p = await apiFetch(`{{ url('/admin/products') }}/${id}`);
-                        if (!p || typeof p !== 'object') throw new Error('Produk tidak ditemukan');
+                        if (!p || typeof p !== 'object') throw new Error('Product not found');
                         openEditProductModal(p);
                     } catch (err) {
-                        console.error('Gagal mengambil detail produk:', err);
-                        // fallback minimal jika API gagal
+                        console.error('Failed to fetch product details:', err);
+                        // Minimal fallback if API fails
                         const fallback = {
                             id,
                             name: tr.cells[1]?.textContent || '',
@@ -1041,9 +1041,9 @@
         supplies.forEach(p => suppliesTbody.insertAdjacentHTML('beforeend', productRowTemplate(p)));
         vitamins.forEach(p => vitaminsTbody.insertAdjacentHTML('beforeend', productRowTemplate(p)));
 
-        if (!petFood.length) petFoodTbody.insertAdjacentHTML('beforeend', '<tr><td colspan="6" style="text-align:center;color:#888;">Belum ada produk Pet Food.</td></tr>');
-        if (!supplies.length) suppliesTbody.insertAdjacentHTML('beforeend', '<tr><td colspan="6" style="text-align:center;color:#888;">Belum ada produk Supplies.</td></tr>');
-        if (!vitamins.length) vitaminsTbody.insertAdjacentHTML('beforeend', '<tr><td colspan="6" style="text-align:center;color:#888;">Belum ada produk Vitamin.</td></tr>');
+        if (!petFood.length) petFoodTbody.insertAdjacentHTML('beforeend', '<tr><td colspan="6" style="text-align:center;color:#888;">No Pet Food products yet.</td></tr>');
+        if (!supplies.length) suppliesTbody.insertAdjacentHTML('beforeend', '<tr><td colspan="6" style="text-align:center;color:#888;">No Supplies products yet.</td></tr>');
+        if (!vitamins.length) vitaminsTbody.insertAdjacentHTML('beforeend', '<tr><td colspan="6" style="text-align:center;color:#888;">No Vitamin products yet.</td></tr>');
 
         bindRowActions();
     }
@@ -1055,7 +1055,7 @@
             if (!Array.isArray(items)) throw new Error('Invalid response');
             renderTables(items);
         } catch (err) {
-            console.error('Gagal memuat produk:', err);
+            console.error('Failed to load products:', err);
         }
     }
 
@@ -1093,7 +1093,7 @@
         try {
             const btn = document.querySelector('#addProductModal .btn-save');
             btn.disabled = true; 
-            btn.textContent = 'Menyimpan...';
+            btn.textContent = 'Saving...';
             
             const fd = new FormData();
             fd.append('name', document.getElementById('addProductName').value.trim());
@@ -1110,17 +1110,17 @@
             await apiFetch(`{{ url('/admin/products') }}`, { method: 'POST', body: fd });
             closeAddModal();
             
-            // Setelah menambah produk, muat ulang data
+            // After adding a product, reload data
             await loadProducts();
-            alert('Produk baru berhasil ditambahkan!');
+            alert('New product added successfully!');
         } catch (e) {
             console.error(e);
-            alert('Gagal menambahkan produk:\n' + (e.message || e));
+            alert('Failed to add product:\n' + (e.message || e));
         } finally {
             const btn = document.querySelector('#addProductModal .btn-save');
             if (btn) { 
                 btn.disabled = false; 
-                btn.textContent = 'Tambah Produk'; 
+                btn.textContent = 'Add Product'; 
             }
         }
     }
@@ -1129,7 +1129,7 @@
         try {
             const btn = document.querySelector('#editProductModal .btn-save');
             btn.disabled = true; 
-            btn.textContent = 'Menyimpan...';
+            btn.textContent = 'Saving...';
             
             const id = document.getElementById('editProductId').value;
             const fd = new FormData();
@@ -1148,23 +1148,23 @@
             await apiFetch(`{{ url('/admin/products') }}/${id}`, { method: 'POST', body: fd });
             closeEditModal();
             
-            // Setelah mengedit produk, muat ulang data
+            // After editing a product, reload data
             await loadProducts();
-            alert('Produk berhasil diupdate!');
+            alert('Product updated successfully!');
         } catch (e) {
             console.error(e);
-            alert('Gagal mengupdate produk:\n' + (e.message || e));
+            alert('Failed to update product:\n' + (e.message || e));
         } finally {
             const btn = document.querySelector('#editProductModal .btn-save');
             if (btn) { 
                 btn.disabled = false; 
-                btn.textContent = 'Simpan Perubahan'; 
+                btn.textContent = 'Save Changes'; 
             }
         }
     }
 
     async function deleteProduct(id) {
-        if (!confirm('Hapus produk ini?')) return;
+        if (!confirm('Delete this product?')) return;
         try {
             await apiFetch(`{{ url('/admin/products') }}/${id}`, { 
                 method: 'POST', 
@@ -1175,12 +1175,12 @@
                 })() 
             });
             
-            // Setelah menghapus produk, muat ulang data
+            // After deleting a product, reload data
             await loadProducts();
-            alert('Produk berhasil dihapus!');
+            alert('Product deleted successfully!');
         } catch (e) {
             console.error(e);
-            alert('Gagal menghapus produk:\n' + (e.message || e));
+            alert('Failed to delete product:\n' + (e.message || e));
         }
     }
 
@@ -1204,7 +1204,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         bindRowActions();
         
-        // Hanya loadProducts jika tidak ada data yang ditampilkan
+        // Only call loadProducts if no data is displayed
         const hasData = document.querySelectorAll('#petFoodTbody tr, #suppliesTbody tr, #vitaminsTbody tr').length > 0;
         if (!hasData) {
             loadProducts();

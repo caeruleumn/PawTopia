@@ -40,8 +40,9 @@ class MemberController extends Controller
         Auth::guard('member')->login($member);
         $request->session()->regenerate();
 
-        return redirect()->route('profile')
-                         ->with('success', 'Registration successful! Welcome to Pawtopia.');
+        // Redirect to pet registration page
+        return redirect()->route('register.pets')
+                         ->with('success', 'Account created! Now let\'s add your pets.');
     }
 
     /**

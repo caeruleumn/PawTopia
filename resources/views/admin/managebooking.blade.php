@@ -1128,11 +1128,9 @@
                 </div>
                 <div class="header-profile">
                     <div class="notification-icon" onclick="toggleNotificationModal()">
-                        <img src="{{ asset('images/notifikasi.svg') }}" alt="Notifications" class="notification-img">
                         <span class="badge" id="notificationBadge">2</span>
                     </div>
                     <div class="profile-info">
-                        <img src="{{ asset('images/profile.png') }}" alt="Profile">
                         <div class="profile-details">
                             <span class="profile-name">Admin</span>
                             <span class="profile-role">Administrator</span>
@@ -1144,36 +1142,36 @@
             <!-- Stats Summary -->
             <div class="stats-summary">
                 <div class="summary-card">
-                    <div class="summary-icon total">
+                    {{-- <div class="summary-icon total">
                         <img src="{{ asset('images/total.svg') }}" alt="Total Bookings" class="icon-image">
-                    </div>
+                    </div> --}}
                     <div class="summary-content">
                         <div class="summary-number" id="totalBookings">0</div>
                         <div class="summary-label">Total Bookings</div>
                     </div>
                 </div>
                 <div class="summary-card">
-                    <div class="summary-icon active">
+                    {{-- <div class="summary-icon active">
                         <img src="{{ asset('images/active.svg') }}" alt="Active Pets" class="icon-image">
-                    </div>
+                    </div> --}}
                     <div class="summary-content">
                         <div class="summary-number" id="activePets">0</div>
                         <div class="summary-label">Pets Boarded</div>
                     </div>
                 </div>
                 <div class="summary-card">
-                    <div class="summary-icon pending">
+                    {{-- <div class="summary-icon pending">
                         <img src="{{ asset('images/pending.svg') }}" alt="Pending Bookings" class="icon-image">
-                    </div>
+                    </div> --}}
                     <div class="summary-content">
                         <div class="summary-number" id="pendingBookings">0</div>
                         <div class="summary-label">Pending Bookings</div>
                     </div>
                 </div>
                 <div class="summary-card">
-                    <div class="summary-icon revenue">
+                    {{-- <div class="summary-icon revenue">
                         <img src="{{ asset('images/revenue.svg') }}" alt="Monthly Revenue" class="icon-image">
-                    </div>
+                    </div> --}}
                     <div class="summary-content">
                         <div class="summary-number" id="monthlyRevenue">Rp 0</div>
                         <div class="summary-label">Monthly Revenue</div>
@@ -1205,11 +1203,11 @@
                     <!-- Search Bar -->
                     <div class="search-box">
                         <i class="bi bi-search"></i>
-                        <input type="text" id="searchInput" placeholder="Cari booking..." class="search-input">
+                        <input type="text" id="searchInput" placeholder="Search bookings..." class="search-input">
                     </div>
                     <!-- Add Booking Button -->
                     <button type="button" class="btn-add-customer" onclick="openAddBookingModal()">
-                        <i class="bi bi-plus-lg"></i> Tambah Booking
+                        <i class="bi bi-plus-lg"></i> Add Booking
                     </button>
                 </div>
             </div>
@@ -1249,6 +1247,8 @@
                 <div id="pageInfo" class="page-info"></div>
             </div>
 
+            <div id="searchStatus" class="search-status"></div>
+
 
            
         </div>
@@ -1272,7 +1272,7 @@
 <div id="addBookingModal" class="modal" style="display: none;">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 class="modal-title" id="addBookingModalTitle">Tambah Booking</h3>
+            <h3 class="modal-title" id="addBookingModalTitle">Add Booking</h3>
             <span class="modal-close" onclick="closeAddBookingModal()">&times;</span>
         </div>
         <div class="modal-body">
@@ -1317,7 +1317,7 @@
                     <label>Check-out</label>
                     <input type="date" name="checkout" required />
                 </div>
-                <div class="form-field">
+                <div class="form-field" id="statusFieldWrapper">
                     <label>Status</label>
                     <select name="status" required>
                         <option value="pending">Pending</option>
@@ -1333,39 +1333,71 @@
                     <input type="number" name="price" min="0" step="1000" value="0" required />
                 </div>
                 <div class="form-actions">
-                    <button type="button" class="btn-delete" onclick="closeAddBookingModal()">Batal</button>
-                    <button type="submit" id="addBookingSubmitBtn" class="btn-add">Simpan</button>
+                    <button type="button" class="btn-delete" onclick="closeAddBookingModal()">Cancel</button>
+                    <button type="submit" id="addBookingSubmitBtn" class="btn-add">Save</button>
                 </div>
             </form>
         </div>
     </div>
     
 </div>
+
+<!-- Update Status Modal -->
+<div id="statusModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Update Booking Status</h3>
+            <span class="modal-close" onclick="closeStatusModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="statusForm" class="form-grid">
+                @csrf
+                <input type="hidden" id="statusBookingId" value="">
+                <div class="form-field">
+                    <label>Booking Status</label>
+                    <select id="statusSelect" required>
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="checked-in">Checked In</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                        <option value="on-pickup">On Pickup</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-delete" onclick="closeStatusModal()">Cancel</button>
+                    <button type="submit" class="btn-add">Update Status</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- MODAL NOTIFICATION -->
 <div class="notification-modal" id="notificationModal">
     <div class="notification-content">
         <div class="notification-header">
-            <h3>Notifikasi</h3>
+            <h3>Notifications</h3>
             <button onclick="toggleNotificationModal()">&times;</button>
         </div>
 
         <div id="notificationList">
             <div class="notification-item unread">
-                <h4>Booking Baru</h4>
-                <p>User melakukan booking hari ini</p>
+                <h4>New Booking</h4>
+                <p>A user made a booking today</p>
             </div>
             <div class="notification-item unread">
-                <h4>Pembayaran Diterima</h4>
-                <p>Transaksi #123 berhasil</p>
+                <h4>Payment Received</h4>
+                <p>Transaction #123 successful</p>
             </div>
             <div class="notification-item">
-                <h4>Testimoni Baru</h4>
-                <p>Ada ulasan dari pelanggan</p>
+                <h4>New Testimonial</h4>
+                <p>A customer left a review</p>
             </div>
         </div>
 
         <div class="notification-footer">
-            <button onclick="markAllAsRead()">Tandai Semua Dibaca</button>
+            <button onclick="markAllAsRead()">Mark All as Read</button>
         </div>
     </div>
 </div>
@@ -2143,6 +2175,17 @@
     box-shadow: 0 4px 12px rgba(229, 115, 0, 0.3);
 }
 
+.btn-status {
+    background: #4CAF50;
+    color: #fff;
+}
+
+.btn-status:hover {
+    background: #43A047;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
 .btn-delete {
     background: #DC3545;
     color: #fff;
@@ -2713,6 +2756,13 @@ document.addEventListener('keydown', function(event) {
     const addBookingSubmitBtn = document.getElementById('addBookingSubmitBtn');
     const editingIdInput = document.getElementById('editingId');
 
+    // Status update modal elements
+    const statusModal = document.getElementById('statusModal');
+    const statusForm = document.getElementById('statusForm');
+    const statusSelect = document.getElementById('statusSelect');
+    const statusBookingIdInput = document.getElementById('statusBookingId');
+    const statusFieldWrapper = document.getElementById('statusFieldWrapper');
+
     let currentPage = 1;
     const itemsPerPage = 10; // Changed from 8 to 10 items per page
     let filteredBookings = [...bookings];
@@ -2723,22 +2773,29 @@ document.addEventListener('keydown', function(event) {
       .then(data => {
         // data is Laravel pagination object
         const records = data.data || [];
-        bookings = records.map((b) => ({
-          id: b.id,
-          customer: b.member?.name || '—',
-          pet: b.pet_name,
-          petType: b.pet_type,
-          // Map check-in to booking_date (no checkout in schema)
-          checkin: b.booking_date,
-          // Derive duration if needed; fallback to '-' as not in schema
-          duration: '-',
-          status: b.status,
-          phone: b.member?.phone || '—',
-          email: b.member?.email || '—',
-          // Use service_type as service label
-          service: b.service_type,
-          price: Number(b.total_price || 0)
-        }));
+        bookings = records.map((b) => {
+          const durationDays = Number(b.duration_days || 1);
+          const checkoutDate = computeCheckoutDate(b.booking_date, durationDays);
+
+          return {
+            id: b.id,
+            customer: b.member?.name || '—',
+            pet: b.pet_name,
+            petType: b.pet_type,
+            // Map check-in to booking_date
+            checkin: b.booking_date,
+            // Compute checkout based on booking_date + duration_days
+            checkout: checkoutDate,
+            // Human readable duration
+            duration: `${durationDays} hari`,
+            status: b.status,
+            phone: b.member?.phone || '—',
+            email: b.member?.email || '—',
+            // Use service_type as service label
+            service: b.service_type,
+            price: Number(b.total_price || 0)
+          };
+        });
         filteredBookings = [...bookings];
         renderBookings();
       })
@@ -2750,10 +2807,18 @@ document.addEventListener('keydown', function(event) {
 
     // Open/Close Add Booking Modal
     window.openAddBookingModal = function() {
-        addBookingModalTitle.textContent = 'Tambah Booking';
-        addBookingSubmitBtn.textContent = 'Simpan';
+        addBookingModalTitle.textContent = 'Add Booking';
+        addBookingSubmitBtn.textContent = 'Save';
         editingIdInput.value = '';
-        addBookingForm.reset();
+        if (addBookingForm) {
+            addBookingForm.reset();
+            if (addBookingForm.status) {
+                addBookingForm.status.value = 'pending';
+            }
+        }
+        if (statusFieldWrapper) {
+            statusFieldWrapper.style.display = '';
+        }
         addBookingModal.style.display = 'flex';
     };
 
@@ -2774,6 +2839,7 @@ document.addEventListener('keydown', function(event) {
                 email: (formData.get('email') || '').toString().trim() || null,
                 service: formData.get('service') || null,
                 checkin: formData.get('checkin'),
+                checkout: formData.get('checkout'),
                 status: formData.get('status'),
                 price: Number(formData.get('price') || 0)
             };
@@ -2802,13 +2868,17 @@ document.addEventListener('keydown', function(event) {
                 return res.json();
             })
             .then(({ booking }) => {
+                const durationDays = Number(booking.duration_days || 1);
+                const checkoutDate = computeCheckoutDate(booking.booking_date, durationDays);
+
                 const mapped = {
                     id: booking.id,
                     customer: booking.member?.name || payload.customer,
                     pet: booking.pet_name,
                     petType: booking.pet_type,
                     checkin: booking.booking_date,
-                    duration: '-',
+                    checkout: checkoutDate,
+                    duration: `${durationDays} hari`,
                     status: booking.status,
                     phone: booking.member?.phone || payload.phone,
                     email: booking.member?.email || payload.email || '—',
@@ -2827,6 +2897,50 @@ document.addEventListener('keydown', function(event) {
             })
             .catch((err) => {
                 alert(err.message || 'Failed to create booking');
+            });
+        });
+    }
+
+    // Handle Status Update submit
+    if (statusForm) {
+        statusForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const bookingId = statusBookingIdInput ? statusBookingIdInput.value : '';
+            const newStatus = statusSelect ? statusSelect.value : '';
+            if (!bookingId || !newStatus) {
+                return;
+            }
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') 
+                || statusForm.querySelector('input[name="_token"]')?.value;
+
+            fetch(`{{ url('/admin/booking') }}/${bookingId}/status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken || '',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(async (res) => {
+                if (!res.ok) {
+                    const data = await res.json().catch(() => ({}));
+                    const msg = data.message || 'Failed to update status';
+                    throw new Error(msg);
+                }
+                return res.json().catch(() => ({}));
+            })
+            .then(() => {
+                const booking = bookings.find(b => b.id === Number(bookingId));
+                if (booking) {
+                    booking.status = newStatus;
+                }
+                filterBookings();
+                window.closeStatusModal && window.closeStatusModal();
+            })
+            .catch((err) => {
+                alert(err.message || 'Failed to update status');
             });
         });
     }
@@ -2964,6 +3078,9 @@ document.addEventListener('keydown', function(event) {
                                 <button class="action-btn btn-edit" onclick="editBooking(${booking.id})">
                                     <i class="bi bi-pencil-square"></i> Edit
                                 </button>
+                                <button class="action-btn btn-status" onclick="openStatusModal(${booking.id})">
+                                    <i class="bi bi-arrow-repeat"></i> Update Status
+                                </button>
                                 <button class="action-btn btn-delete" onclick="deleteBooking(${booking.id})">
                                     <i class="bi bi-trash"></i> Delete
                                 </button>
@@ -2990,14 +3107,34 @@ document.addEventListener('keydown', function(event) {
         updateStatistics();
     }
 
-    // Function to format date
+    // Function to format date for display
     function formatDate(dateString) {
+        if (!dateString) return '-';
         const date = new Date(dateString);
+        if (Number.isNaN(date.getTime())) return '-';
         return date.toLocaleDateString('id-ID', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
         });
+    }
+
+    // Compute checkout date (YYYY-MM-DD) from booking_date and duration_days
+    function computeCheckoutDate(bookingDate, durationDays) {
+        if (!bookingDate) return '';
+        const parts = String(bookingDate).split('-');
+        if (parts.length !== 3) return '';
+        const year = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1;
+        const day = parseInt(parts[2], 10);
+        const baseDate = new Date(year, month, day);
+        if (Number.isNaN(baseDate.getTime())) return '';
+        const days = Number(durationDays || 1) - 1;
+        baseDate.setDate(baseDate.getDate() + (days > 0 ? days : 0));
+        const yyyy = baseDate.getFullYear();
+        const mm = String(baseDate.getMonth() + 1).padStart(2, '0');
+        const dd = String(baseDate.getDate()).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd}`;
     }
 
     // Normalize status to a consistent key
@@ -3045,7 +3182,6 @@ document.addEventListener('keydown', function(event) {
         } else {
             pageInfo.innerHTML = `
                 <div style="text-align: center; margin-top: 15px; color: #6B4F3A; font-size: 14px;">
-                    <div>manage booking</div>
                     <div>Showing ${startIndex}-${endIndex} of ${filteredBookings.length} customers (Page ${currentPage} of ${totalPages})</div>
                     ${filteredBookings.length <= itemsPerPage ? '<div>Showing all customers</div>' : ''}
                 </div>
@@ -3058,8 +3194,27 @@ document.addEventListener('keydown', function(event) {
 
     // Function to render search status
     function renderSearchStatus() {
+        if (!searchStatus) {
+            return;
+        }
+
         const searchTerm = searchInput.value.trim();
         const selectedStatus = statusFilter.value;
+
+        const statusLabelMap = {
+            'pending': 'Pending',
+            'confirmed': 'Confirmed',
+            'checked-in': 'Checked In',
+            'completed': 'Completed',
+            'cancelled': 'Cancelled',
+            'on-pickup': 'On Pickup',
+        };
+
+        let displayStatus = '';
+        if (selectedStatus) {
+            const key = normalizeStatus(selectedStatus);
+            displayStatus = statusLabelMap[key] || selectedStatus;
+        }
 
         if (searchTerm || selectedStatus) {
             const filters = [];
@@ -3206,6 +3361,22 @@ document.addEventListener('keydown', function(event) {
         }
     };
 
+    window.openStatusModal = function(id) {
+        const booking = bookings.find(b => b.id === id);
+        if (!booking || !statusModal || !statusSelect || !statusBookingIdInput) {
+            return;
+        }
+        statusBookingIdInput.value = String(id);
+        statusSelect.value = normalizeStatus(booking.status) || 'pending';
+        statusModal.style.display = 'flex';
+    };
+
+    window.closeStatusModal = function() {
+        if (statusModal) {
+            statusModal.style.display = 'none';
+        }
+    };
+
     window.editBooking = function(id) {
         // Fetch latest data from backend
         fetch(`{{ url('/admin/bookings') }}/${id}`)
@@ -3220,15 +3391,43 @@ document.addEventListener('keydown', function(event) {
                 addBookingForm.pet.value = data.pet_name || '';
                 addBookingForm.petType.value = (data.pet_type || '').charAt(0).toUpperCase() + (data.pet_type || '').slice(1);
                 addBookingForm.phone.value = data.member?.phone || '';
-                if (addBookingForm.email) addBookingForm.email.value = data.member?.email || '';
-                addBookingForm.service.value = data.service_type || '';
+                if (addBookingForm.email) {
+                    addBookingForm.email.value = data.member?.email || '';
+                }
+
+                // Try to recover service from notes (e.g. "Service: Drop Off")
+                let serviceFromNotes = '';
+                if (data.notes) {
+                    const match = String(data.notes).match(/Service:\s*(.+)/i);
+                    if (match) {
+                        serviceFromNotes = match[1].trim();
+                    }
+                }
+                if (addBookingForm.service) {
+                    addBookingForm.service.value = serviceFromNotes || addBookingForm.service.value || 'Drop Off';
+                }
+
+                // Set check-in date
                 addBookingForm.checkin.value = data.booking_date || '';
-                addBookingForm.status.value = data.status || 'pending';
+
+                // Hitung dan set check-out date berdasarkan booking_date + duration_days
+                const durationDays = Number(data.duration_days || 1);
+                const checkoutDate = computeCheckoutDate(data.booking_date, durationDays);
+                if (addBookingForm.checkout) {
+                    addBookingForm.checkout.value = checkoutDate || data.booking_date || '';
+                }
+                if (addBookingForm.status) {
+                    addBookingForm.status.value = data.status || 'pending';
+                }
                 addBookingForm.price.value = data.total_price || 0;
+
+                if (statusFieldWrapper) {
+                    statusFieldWrapper.style.display = 'none';
+                }
 
                 addBookingModal.style.display = 'flex';
             })
-            .catch(err => alert('Gagal memuat data booking'));
+            .catch(err => alert('Failed to load booking data'));
     };
 
     window.deleteBooking = function(id) {

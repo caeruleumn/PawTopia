@@ -6,8 +6,8 @@
     <main class="dashboard-main">
         <!-- Header -->
         <x-dashboard-header 
-            title="Customer Testimonial"
-            subtitle="Pet Boarding Customer Reviews & Feedback"
+            title="Customer Testimonials"
+            subtitle="Reviews from verified customers with completed bookings"
             icon="star"
         />
 
@@ -18,8 +18,8 @@
                     <img src="{{ asset('images/komen.svg') }}" alt="Reviews Icon" class="icon-image">
                 </div>
                 <div class="summary-content">
-                    <div class="summary-number" id="totalReviews">{{ number_format($totalFeedback) }}</div>
-                    <div class="summary-label">Total Reviews</div>
+                    <div class="summary-number" id="totalReviews">{{ number_format($totalTestimonials) }}</div>
+                    <div class="summary-label">Total Testimonials</div>
                 </div>
             </div>
             <div class="summary-card">
@@ -46,7 +46,7 @@
                 </div>
                 <div class="summary-content">
                     <div class="summary-number">{{ $positivePercentage }}%</div>
-                    <div class="summary-label">Positive Reviews</div>
+                    <div class="summary-label">Positive Testimonials</div>
                 </div>
             </div>
         </div>
@@ -94,33 +94,37 @@
                         </tr>
                     </thead>
                     <tbody id="testimonialTableBody">
-                        @forelse($feedbacks as $feedback)
-                            <tr data-rating="{{ $feedback->rating }}">
+                        @forelse($testimonials as $testimonial)
+                            <tr data-rating="{{ $testimonial->rating }}">
                                 <td>
-                                    {{ ($feedbacks->currentPage() - 1) * $feedbacks->perPage() + $loop->iteration }}
+                                    {{ ($testimonials->currentPage() - 1) * $testimonials->perPage() + $loop->iteration }}
                                 </td>
                                 <td>
-                                    <div class="customer-name">{{ $feedback->user_name ?? ($feedback->email ?? 'Anonymous') }}</div>
+                                    <div class="customer-name">{{ $testimonial->member->name ?? 'Member' }}</div>
+                                    <div class="customer-email" style="font-size:0.85rem;color:#888;">{{ $testimonial->member->email ?? '' }}</div>
                                 </td>
                                 <td>
-                                    <div class="testimonial-text">{{ $feedback->message }}</div>
+                                    <div class="testimonial-text">{{ $testimonial->message }}</div>
+                                    <div style="font-size:0.8rem;color:#999;margin-top:4px;">
+                                        Booking: {{ $testimonial->booking->service_type ?? '' }} - {{ $testimonial->booking->pet_name ?? '' }}
+                                    </div>
                                 </td>
                                 <td class="date-display">
-                                    {{ $feedback->created_at?->format('d/m/Y') }}
+                                    {{ $testimonial->created_at?->format('d/m/Y') }}
                                 </td>
                                 <td>
                                     <div class="rating-display">
-                                        <div class="rating-score">{{ $feedback->rating }}/5</div>
+                                        <div class="rating-score">{{ $testimonial->rating }}/5</div>
                                         <div class="star-rating">
                                             @for($i=1;$i<=5;$i++)
-                                                <span class="star {{ $i <= $feedback->rating ? 'filled' : 'empty' }}">★</span>
+                                                <span class="star {{ $i <= $testimonial->rating ? 'filled' : 'empty' }}">★</span>
                                             @endfor
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="action-buttons">
-                                        <form id="delete-form-{{ $feedback->id }}" action="{{ route('admin.feedback.destroy', $feedback) }}" method="POST" onsubmit="return confirm('Delete this testimonial?')">
+                                        <form id="delete-form-{{ $testimonial->id }}" action="{{ route('admin.testimonials.destroy', $testimonial) }}" method="POST" onsubmit="return confirm('Delete this testimonial?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="action-btn btn-delete">
@@ -152,11 +156,11 @@
             </div>
 
             <!-- Pagination -->
-            @if($feedbacks->hasPages())
+            @if($testimonials->hasPages())
                 <div class="pagination-wrapper">
-                    {{ $feedbacks->appends(request()->query())->links('pagination::bootstrap-4') }}
+                    {{ $testimonials->appends(request()->query())->links('pagination::bootstrap-4') }}
                     <div id="pageInfo" class="page-info">
-                        Showing {{ $feedbacks->firstItem() }} to {{ $feedbacks->lastItem() }} of {{ $feedbacks->total() }} entries
+                        Showing {{ $testimonials->firstItem() }} to {{ $testimonials->lastItem() }} of {{ $testimonials->total() }} entries
                     </div>
                 </div>
             @endif
@@ -170,27 +174,27 @@
 <div class="notification-modal" id="notificationModal">
     <div class="notification-content">
         <div class="notification-header">
-            <h3>Notifikasi</h3>
+            <h3>Notifications</h3>
             <button onclick="toggleNotificationModal()">&times;</button>
         </div>
 
         <div id="notificationList">
             <div class="notification-item unread">
-                <h4>Booking Baru</h4>
-                <p>User melakukan booking hari ini</p>
+                <h4>New Booking</h4>
+                <p>A user made a booking today</p>
             </div>
             <div class="notification-item unread">
-                <h4>Pembayaran Diterima</h4>
-                <p>Transaksi #123 berhasil</p>
+                <h4>Payment Received</h4>
+                <p>Transaction #123 successful</p>
             </div>
             <div class="notification-item">
-                <h4>Testimoni Baru</h4>
-                <p>Ada ulasan dari pelanggan</p>
+                <h4>New Testimonial</h4>
+                <p>A customer left a review</p>
             </div>
         </div>
 
         <div class="notification-footer">
-            <button onclick="markAllAsRead()">Tandai Semua Dibaca</button>
+            <button onclick="markAllAsRead()">Mark All as Read</button>
         </div>
     </div>
 </div>

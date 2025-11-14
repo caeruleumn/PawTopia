@@ -331,29 +331,67 @@
                     <span>{{ Auth::guard('member')->user()->created_at->format('F d, Y') }}</span>
                 </div>
 
-                {{-- contoh pet section (nanti bisa dari tabel pets) --}}
+                {{-- Pets Section --}}
                 <div class="pets-section">
-                    <h4>Registered Pets</h4>
-                    <div class="pet-card">
-                        <div class="pet-header">
-                            <span>Buddy</span>
-                            <span class="pet-badge">Dog</span>
-                        </div>
-                        <div class="pet-info">
-                            <div>
-                                <strong>BREED</strong>
-                                Golden Retriever
-                            </div>
-                            <div>
-                                <strong>AGE</strong>
-                                3 years
-                            </div>
-                            <div>
-                                <strong>WEIGHT</strong>
-                                28 kg
-                            </div>
-                        </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h4 style="margin: 0;">Registered Pets ({{ $pets->count() }})</h4>
+                        <a href="{{ route('register.pets') }}" style="background: #fbb6a2; color: #5c3d2e; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 13px; font-weight: 600; box-shadow: 0 2px 8px rgba(251, 182, 162, 0.3);">
+                            + Add Pet
+                        </a>
                     </div>
+
+                    @forelse($pets as $pet)
+                        <div class="pet-card">
+                            <div class="pet-header">
+                                <span>{{ $pet->name }}</span>
+                                <span class="pet-badge" style="{{ $pet->type === 'dog' ? 'background: #FFE6CC;' : 'background: #E6F2FF;' }}">
+                                    {{ $pet->type === 'dog' ? '🐕' : '🐈' }} {{ ucfirst($pet->type) }}
+                                </span>
+                            </div>
+                            @if($pet->photo)
+                            <div style="margin-top: 15px; text-align: center;">
+                                <img src="{{ asset('storage/' . $pet->photo) }}" alt="{{ $pet->name }}" style="max-width: 200px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            </div>
+                            @endif
+                            <br>
+                            <div class="pet-info">
+                                <div>
+                                    <strong>BREED</strong>
+                                    {{ $pet->breed ?? 'Not specified' }}
+                                </div>
+                                <div>
+                                    <strong>AGE</strong>
+                                    {{ $pet->age ? $pet->age . ' years' : 'Not specified' }}
+                                </div>
+                                <div>
+                                    <strong>WEIGHT</strong>
+                                    {{ $pet->weight ? number_format($pet->weight, 1) . ' kg' : 'Not specified' }}
+                                </div>
+                                @if($pet->medical_notes || $pet->special_requirements)
+                                <div style="grid-column: 1 / -1;">
+                                    <strong>NOTES</strong>
+                                    <div style="margin-top: 5px; line-height: 1.5;">
+                                        @if($pet->medical_notes)
+                                            <div><span style="font-weight: 600;">Medical:</span> {{ $pet->medical_notes }}</div>
+                                        @endif
+                                        @if($pet->special_requirements)
+                                            <div><span style="font-weight: 600;">Special:</span> {{ $pet->special_requirements }}</div>
+                                        @endif
+                                    </div>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                    @empty
+                        <div style="text-align: center; padding: 40px 20px; color: #8b5a3c;">
+                            <div style="font-size: 48px; margin-bottom: 15px;">🐾</div>
+                            <p style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">No Pets Registered Yet</p>
+                            <p style="font-size: 14px; opacity: 0.7; margin-bottom: 20px;">Add your furry friends to start booking daycare services!</p>
+                            <a href="{{ route('register.pets') }}" style="display: inline-block; background: #fbb6a2; color: #5c3d2e; padding: 12px 24px; border-radius: 20px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(251, 182, 162, 0.3);">
+                                Add Your First Pet
+                            </a>
+                        </div>
+                    @endforelse
                 </div>
 
                 <form action="{{ route('logout') }}" method="POST">

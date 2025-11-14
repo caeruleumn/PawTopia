@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Models\Feedback;
+use App\Models\Testimonial;
 
 class UserController extends Controller
 {
     public function home()
     {
-        // Fetch recent positive testimonials (4-5 stars)
-        $testimonials = Feedback::whereIn('rating', [4,5])
+        // Fetch recent positive testimonials (4-5 stars) dari user yang sudah booking
+        $testimonials = Testimonial::with('member', 'booking')
+            ->whereIn('rating', [4, 5])
             ->latest()
             ->take(8)
             ->get();
@@ -83,43 +84,12 @@ class UserController extends Controller
         return view('contact');
     }
 
-    public function register()
-    {
-        return view('register');
-    }
-
-    public function login()
-    {
-        return view('auth.login');
-    }
-
     public function profile()
     {
-        return view('profile');
+        $member = auth('member')->user();
+        $pets = $member->pets()->where('is_active', true)->get();
+        
+        return view('profile', compact('pets'));
     }
 
-    public function booking()
-    {
-        return view('booking');
-    }
-
-    // Booking History Page (User)
-    public function history()
-    {
-        // TODO: Replace with real bookings fetched from DB for the authenticated user
-        // Example expected structure:
-        // $bookings = Booking::where('member_id', auth('member')->id())->latest()->get();
-        $bookings = []; // placeholder
-
-        if (empty($bookings)) {
-            // If user has never made a booking, show the empty-state History page.
-            // The page's button will route to booking if logged in, or to member page if not.
-            return view('history2');
-        }
-
-        // If user has bookings, pass them to the history table view
-        return view('history', [
-            'bookings' => $bookings,
-        ]);
-    }
 }

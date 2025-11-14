@@ -274,17 +274,8 @@
                         <input type="text" name="address" placeholder="Full Address" required>
                     </div>
                 </div>
-                <div class="form-section">
-                    <h3>Pet Information</h3>
-                    <div class="form-group">
-                        <input type="text" name="pet_name" placeholder="Pet Name" required>
-                        <input type="text" name="pet_type" placeholder="Pet Type" required>
-                        <input type="text" name="breed" placeholder="Breed" required>
-                        <input type="number" name="age" placeholder="Age" required>
-                        <input type="text" name="weight" placeholder="Weight" required>
-                    </div>
-                </div>
-                <button type="submit" class="register-button">Register Now</button>
+                <p style="font-size: 13px; color: #666; text-align: center; margin: 10px 0;">You'll add your pet information in the next step</p>
+                <button type="submit" class="register-button">Continue to Pet Registration</button>
             </form>
         </div>
         </div>

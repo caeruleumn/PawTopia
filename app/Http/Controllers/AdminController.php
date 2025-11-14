@@ -35,10 +35,134 @@ class AdminController extends Controller
         return redirect()->route('admin.login'); // arahkan ke admin login page
     }
 
+    /**
+     * Get calendar data for dashboard
+     */
+    public function getDashboardCalendar(Request $request)
+    {
+        $month = $request->integer('month', now()->month);
+        $year = $request->integer('year', now()->year);
+
+        $bookings = \App\Models\Booking::whereYear('booking_date', $year)
+            ->whereMonth('booking_date', $month)
+            ->whereIn('status', ['pending', 'confirmed', 'checked-in'])
+            ->select('booking_date', \DB::raw('COUNT(*) as total_booked'))
+            ->groupBy('booking_date')
+            ->get()
+            ->keyBy(function($item) {
+                return $item->booking_date->format('Y-m-d');
+            });
+
+        return response()->json([
+            'success' => true,
+            'bookings' => $bookings
+        ]);
+    }
+
     // halaman dashboard
     public function dashboard()
     {
-        return view('admin.dashboard');
+        // Total Bookings
+        $totalBookings = \App\Models\Booking::count();
+        $thisWeekBookings = \App\Models\Booking::whereBetween('created_at', [
+            now()->startOfWeek(),
+            now()->endOfWeek()
+        ])->count();
+        
+        // Registered Users (Members)
+        $totalMembers = \App\Models\Member::count();
+        $recentMembers = \App\Models\Member::where('created_at', '>=', now()->subDays(3))->count();
+        
+        // Today's Pick-Up (bookings dengan status on-pickup atau completed hari ini)
+        $todayPickup = \App\Models\Booking::whereDate('booking_date', today())
+            ->whereIn('status', ['on-pickup', 'completed'])
+            ->count();
+        $todayPickupCompleted = \App\Models\Booking::whereDate('booking_date', today())
+            ->where('status', 'completed')
+            ->count();
+        $todayPickupRemaining = $todayPickup - $todayPickupCompleted;
+        
+        // Reviews (Testimonials + Feedback)
+        $totalTestimonials = \App\Models\Testimonial::count();
+        $totalFeedback = \App\Models\Feedback::count();
+        $totalReviews = $totalTestimonials + $totalFeedback;
+        
+        // Recent Bookings for table
+        $recentBookings = \App\Models\Booking::with('member')
+            ->latest()
+            ->take(10)
+            ->get();
+        
+        // Booking statistics by status
+        $pendingBookings = \App\Models\Booking::where('status', 'pending')->count();
+        $confirmedBookings = \App\Models\Booking::where('status', 'confirmed')->count();
+        $completedBookings = \App\Models\Booking::where('status', 'completed')->count();
+        
+        // Today's Activities
+        $todayActivities = \App\Models\Booking::whereDate('created_at', today())->count();
+        $dogsBoarded = \App\Models\Booking::where('pet_type', 'dog')
+            ->whereDate('booking_date', '<=', today())
+            ->whereIn('status', ['confirmed', 'checked-in'])
+            ->count();
+        $catsBoarded = \App\Models\Booking::where('pet_type', 'cat')
+            ->whereDate('booking_date', '<=', today())
+            ->whereIn('status', ['confirmed', 'checked-in'])
+            ->count();
+        
+        // Monthly Stats
+        $monthlyRevenue = \App\Models\Booking::whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->whereIn('status', ['completed', 'confirmed', 'checked-in'])
+            ->sum('total_price');
+        $monthlyPets = \App\Models\Booking::whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count();
+        $averageRating = \App\Models\Testimonial::avg('rating') ?: 0;
+        
+        // Capacity Utilization (assuming max 20 pets per day)
+        $activePets = \App\Models\Booking::whereDate('booking_date', '<=', today())
+            ->whereIn('status', ['confirmed', 'checked-in'])
+            ->count();
+        $capacityUtilization = $activePets > 0 ? min(100, round(($activePets / 20) * 100)) : 0;
+        
+        // Recent Activities for timeline
+        $recentActivities = \App\Models\Booking::with('member')
+            ->whereDate('created_at', today())
+            ->latest()
+            ->take(5)
+            ->get()
+            ->map(function($booking) {
+                return [
+                    'type' => 'booking',
+                    'text' => 'New Booking',
+                    'detail' => $booking->member->name . ' booked ' . $booking->service_type . ' for ' . $booking->pet_name,
+                    'time' => $booking->created_at->diffForHumans(),
+                    'status' => $booking->status
+                ];
+            });
+        
+        return view('admin.dashboard', compact(
+            'totalBookings',
+            'thisWeekBookings',
+            'totalMembers',
+            'recentMembers',
+            'todayPickup',
+            'todayPickupCompleted',
+            'todayPickupRemaining',
+            'totalReviews',
+            'recentBookings',
+            'pendingBookings',
+            'confirmedBookings',
+            'completedBookings',
+            'todayActivities',
+            'dogsBoarded',
+            'catsBoarded',
+            'monthlyRevenue',
+            'monthlyPets',
+            'averageRating',
+            'capacityUtilization',
+            'recentActivities'
+        ));
     }
 
     // dst...

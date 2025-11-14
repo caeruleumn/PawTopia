@@ -640,12 +640,12 @@
 
             <div class="about-images">
                 <div class="about-images-row">
-                    <img src="{{ asset('images/kucing1.svg') }}" alt="Kucing">
-                    <img src="{{ asset('images/merah.svg') }}" alt="Bentuk Merah">
+                    <img src="{{ asset('images/kucing1.svg') }}" alt="Cat">
+                    <img src="{{ asset('images/merah.svg') }}" alt="Red Shape">
                 </div>
                 <div class="about-images-row">
-                    <img src="{{ asset('images/cream.svg') }}" alt="Bentuk Cream">
-                    <img src="{{ asset('images/anjing1.svg') }}" alt="Anjing">
+                    <img src="{{ asset('images/cream.svg') }}" alt="Cream Shape">
+                    <img src="{{ asset('images/anjing1.svg') }}" alt="Dog">
                 </div>
             </div>
         </div>
@@ -681,7 +681,7 @@
         
     <section>
         <div class="gambar">
-            <img src="{{ asset('images/gambar.svg') }}" alt="Anjing">
+            <img src="{{ asset('images/gambar.svg') }}" alt="Dog">
         </div>      
     </section>
 
@@ -692,16 +692,21 @@
             <button class="carousel-btn prev">‹</button>
             <div class="carousel">
                 <div class="carousel-track">
-                    @forelse($testimonials ?? [] as $fb)
+                    @forelse($testimonials ?? [] as $testimonial)
                         <div class="card">
-                            <h4>{{ $fb->user_name ?? ($fb->email ?? 'Anonymous') }}</h4>
-                            <div class="stars">{!! str_repeat('★ ', (int) $fb->rating) !!}</div>
-                            <p>"{{ $fb->message }}"</p>
+                            <h4>{{ $testimonial->member->name ?? 'Anonymous Pet Parent' }}</h4>
+                            <div class="stars">{!! str_repeat('★', (int) $testimonial->rating) !!}</div>
+                            <p>"{{ $testimonial->message }}"</p>
+                            @if($testimonial->booking)
+                                <small style="color: #999; font-size: 12px; margin-top: 8px; display: block;">
+                                    {{ $testimonial->booking->service_type }} service
+                                </small>
+                            @endif
                         </div>
                     @empty
                         <div class="card">
                             <h4>Pawtopia Guest</h4>
-                            <div class="stars">★ ★ ★ ★ ★</div>
+                            <div class="stars">★★★★★</div>
                             <p>"We can't wait to collect more happy stories from our lovely pet parents!"</p>
                         </div>
                     @endforelse
@@ -753,7 +758,7 @@
         <a href="{{ route('booking') }}" class="book-btn">Book a Spot</a>
     </div>
     <div class="cozy-right">
-        <img src="{{ asset('images/orang.svg') }}" alt="Woman holding cat" />
+        <img src="{{ asset('images/orang.svg') }}" alt="Woman holding a cat" />
     </div>
 </section>
 

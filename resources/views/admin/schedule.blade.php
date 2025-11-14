@@ -43,9 +43,14 @@
                 <!-- Calendar will be populated by JavaScript -->
             </div>
             <div class="calendar-legend">
-                <div class="legend-item"><span class="legend-dot available"></span><span>Tersedia</span></div>
-                <div class="legend-item"><span class="legend-dot moderate"></span><span>Hampir Penuh</span></div>
-                <div class="legend-item"><span class="legend-dot busy"></span><span>Penuh</span></div>
+                <div class="legend-item">
+                    <span class="legend-dot available"></span>
+                    <span>Available - Angka menunjukkan total booking</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot busy"></span>
+                    <span>Full - Kapasitas penuh (25+)</span>
+                </div>
             </div>
         </div>
 
@@ -135,27 +140,27 @@
 <div class="notification-modal" id="notificationModal">
     <div class="notification-content">
         <div class="notification-header">
-            <h3>Notifikasi</h3>
+            <h3>Notifications</h3>
             <button onclick="toggleNotificationModal()">&times;</button>
         </div>
 
         <div id="notificationList">
             <div class="notification-item unread">
-                <h4>Booking Baru</h4>
-                <p>User melakukan booking hari ini</p>
+                <h4>New Booking</h4>
+                <p>A user made a booking today</p>
             </div>
             <div class="notification-item unread">
-                <h4>Pembayaran Diterima</h4>
-                <p>Transaksi #123 berhasil</p>
+                <h4>Payment Received</h4>
+                <p>Transaction #123 successful</p>
             </div>
             <div class="notification-item">
-                <h4>Testimoni Baru</h4>
-                <p>Ada ulasan dari pelanggan</p>
+                <h4>New Testimonial</h4>
+                <p>A customer left a review</p>
             </div>
         </div>
 
         <div class="notification-footer">
-            <button onclick="markAllAsRead()">Tandai Semua Dibaca</button>
+            <button onclick="markAllAsRead()">Mark All as Read</button>
         </div>
     </div>
 </div>
@@ -530,22 +535,82 @@
     .calendar-days { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
 
     .calendar-day { height:80px; display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start; color:#6B4F3A; border-radius:10px; cursor:pointer; transition:all .2s ease; position:relative; background:rgba(255,255,255,0.6); padding:8px; border:1px solid rgba(255,255,255,0.4); }
-    .calendar-day:hover { background:#fff; transform:scale(1.01); }
-    .calendar-day.today { background:#E57300; color:#fff; box-shadow:0 4px 12px rgba(229,115,0,0.3); }
+    .calendar-day:hover { background:#fff; transform:scale(1.05); box-shadow:0 4px 12px rgba(107,79,58,0.15); }
     .calendar-day.other-month { color:#ccc; background:transparent; border:1px dashed rgba(255,255,255,0.5); }
+    .calendar-day.selected { 
+        background:#FFE0B5 !important; 
+        border:2px solid #E57300 !important; 
+        box-shadow:0 4px 16px rgba(229,115,0,0.35);
+        transform:scale(1.02);
+    }
+    .calendar-day.selected .day-number {
+        background:#E57300;
+        color:#fff;
+    }
+    
+    /* Background colors based on booking status - ONLY FULL is RED */
+    .calendar-day.bg-busy { 
+        background:linear-gradient(135deg, rgba(244, 67, 54, 0.25), rgba(229, 57, 53, 0.3)) !important; 
+        border:2px solid #E53935 !important;
+        box-shadow:0 4px 16px rgba(229, 57, 53, 0.4);
+    }
+    .calendar-day.bg-busy:hover {
+        background:linear-gradient(135deg, rgba(244, 67, 54, 0.35), rgba(229, 57, 53, 0.4)) !important;
+        transform:scale(1.05);
+    }
+    
     .calendar-event { position:absolute; bottom:8px; left:8px; right:8px; display:flex; gap:6px; align-items:center; }
     .day-number { font-weight:800; background:rgba(255,255,255,0.85); color:#6B4F3A; border-radius:8px; padding:2px 6px; box-shadow:0 2px 6px rgba(0,0,0,0.05); }
+    
+    /* Today label */
+    .today-label {
+        position:absolute;
+        top:8px;
+        right:8px;
+        background:#E57300;
+        color:#fff;
+        font-size:0.65rem;
+        font-weight:700;
+        padding:2px 6px;
+        border-radius:4px;
+        box-shadow:0 2px 6px rgba(229,115,0,0.3);
+        text-transform:uppercase;
+        letter-spacing:0.5px;
+    }
+    
+    /* Booking count style - angka kecil di pojok */
+    .booking-count { 
+        position:absolute; 
+        bottom:8px; 
+        right:8px; 
+        background:rgba(107, 79, 58, 0.9); 
+        color:#fff; 
+        font-size:0.8rem; 
+        font-weight:800; 
+        border-radius:50%; 
+        width:24px; 
+        height:24px; 
+        display:flex; 
+        align-items:center; 
+        justify-content:center; 
+        box-shadow:0 3px 8px rgba(0,0,0,0.25);
+    }
+    .calendar-day.bg-busy .booking-count { 
+        background:#E53935 !important;
+        box-shadow:0 3px 10px rgba(229, 57, 53, 0.5);
+        font-size:0.85rem;
+    }
+    
     .dot { width:8px; height:8px; border-radius:50%; }
     .dot.available { background:#4CAF50; }
     .dot.moderate { background:#FF9800; }
     .dot.busy { background:#E53935; }
 
-    .calendar-legend { display:flex; justify-content:center; gap:16px; padding-top:12px; border-top:1px solid rgba(169,123,93,0.2); margin-top:12px; }
-    .legend-item { display:flex; align-items:center; gap:6px; font-size:0.85rem; color:#A97B5D; }
-    .legend-dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
-    .legend-dot.available { background:#4CAF50; }
-    .legend-dot.moderate { background:#FF9800; }
-    .legend-dot.busy { background:#E53935; }
+    .calendar-legend { display:flex; justify-content:center; gap:24px; padding-top:12px; border-top:1px solid rgba(169,123,93,0.2); margin-top:12px; }
+    .legend-item { display:flex; align-items:center; gap:8px; font-size:0.9rem; color:#6B4F3A; font-weight:600; }
+    .legend-dot { width:28px; height:28px; border-radius:6px; display:inline-block; border:1px solid; }
+    .legend-dot.available { background:rgba(255,255,255,0.6); border-color:rgba(255,255,255,0.4); }
+    .legend-dot.busy { background:linear-gradient(135deg, rgba(244, 67, 54, 0.25), rgba(229, 57, 53, 0.3)); border:2px solid #E53935; }
 
     /* Content card & Schedule table (mirror feedback aesthetics) */
     .content-card { background:linear-gradient(135deg,#fff 0%,#fefefe 100%); border-radius:24px; padding:32px; box-shadow:0 12px 40px rgba(230,161,93,0.08); border:1px solid rgba(255,255,255,0.5); margin-bottom:32px; }
@@ -673,64 +738,10 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Sample pet boarding schedule data
-    const scheduleData = [
-        {
-            id: 1,
-            date: '2025-08-05',
-            capacity: 25,
-            booked: 18,
-            status: 'Available'
-        },
-        {
-            id: 2,
-            date: '2025-08-12',
-            capacity: 20,
-            booked: 20,
-            status: 'Full'
-        },
-        {
-            id: 3,
-            date: '2025-08-18',
-            capacity: 30,
-            booked: 0,
-            status: 'Unavailable'
-        },
-        {
-            id: 4,
-            date: '2025-08-22',
-            capacity: 25,
-            booked: 12,
-            status: 'Available'
-        },
-        {
-            id: 5,
-            date: '2025-08-28',
-            capacity: 20,
-            booked: 8,
-            status: 'Available'
-        }
-    ];
-
-    // Sample events for calendar
-    const calendarEvents = {
-        '2025-08-05': [
-            { name: '18/25', type: 'available' }
-        ],
-        '2025-08-12': [
-            { name: 'Full', type: 'full' }
-        ],
-        '2025-08-18': [
-            { name: 'Closed', type: 'unavailable' }
-        ],
-        '2025-08-22': [
-            { name: '12/25', type: 'available' }
-        ],
-        '2025-08-28': [
-            { name: '8/20', type: 'available' }
-        ]
-    };
-
+    // Data dari backend API
+    let scheduleData = [];
+    let calendarEvents = {};
+    
     let currentDate = new Date();
     let currentMonth = currentDate.getMonth();
     let currentYear = currentDate.getFullYear();
@@ -755,6 +766,52 @@ document.addEventListener('DOMContentLoaded', function() {
     const viewWeekBtn = document.getElementById('viewWeek');
     const closeModal = document.getElementById('closeModal');
     const cancelBtn = document.getElementById('cancelBtn');
+    const filterDateInput = document.getElementById('filterDate');
+
+    // Fetch schedule data from backend API
+    async function fetchCalendarData() {
+        try {
+            const response = await fetch(`/admin/schedule/calendar?month=${currentMonth + 1}&year=${currentYear}`);
+            const data = await response.json();
+            
+            if (data.success) {
+                calendarEvents = {};
+                Object.values(data.schedules).forEach(schedule => {
+                    calendarEvents[schedule.date] = [{
+                        name: schedule.label,
+                        type: schedule.status, // available, moderate, busy
+                        booked: schedule.booked,
+                        capacity: schedule.capacity
+                    }];
+                });
+                renderCalendar();
+            }
+        } catch (error) {
+            console.error('Error fetching calendar data:', error);
+        }
+    }
+
+    // Fetch schedule list from backend API
+    async function fetchScheduleList(page = 1, filterDate = '') {
+        try {
+            let url = `/admin/schedule/list?page=${page}&per_page=8`;
+            if (filterDate) {
+                url += `&date=${filterDate}`;
+            }
+            
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (data.success) {
+                scheduleData = data.data;
+                renderScheduleTable(data.data, data.pagination);
+            }
+        } catch (error) {
+            console.error('Error fetching schedule list:', error);
+            noScheduleMessage.style.display = 'block';
+            scheduleTableBody.innerHTML = '';
+        }
+    }
 
     // Function to render calendar
     function renderCalendar() {
@@ -785,31 +842,26 @@ document.addEventListener('DOMContentLoaded', function() {
             const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
             const isToday = dateStr === new Date().toISOString().split('T')[0];
             const events = calendarEvents[dateStr] || [];
-            // Determine dot status: available/moderate/busy
-            let dotClass = '';
+            
+            // Determine background class and booking count
+            let bgClass = '';
+            let bookingCount = 0;
+            
             if (events.length) {
                 const e = events[0];
-                if (e.type === 'full') dotClass = 'busy';
-                else if (e.type === 'available') {
-                    // parse like '12/25' to compute ratio
-                    const match = e.name.match(/(\d+)\/(\d+)/);
-                    if (match) {
-                        const booked = parseInt(match[1]);
-                        const cap = parseInt(match[2]);
-                        const ratio = booked / cap;
-                        dotClass = ratio >= 0.8 ? 'moderate' : 'available';
-                    } else {
-                        dotClass = 'available';
-                    }
-                } else if (e.type === 'unavailable') {
-                    dotClass = 'busy';
+                bookingCount = e.booked || 0;
+                
+                // HANYA tampilkan merah jika FULL (busy)
+                if (e.type === 'busy') {
+                    bgClass = 'bg-busy';
                 }
             }
 
             calendarHTML += `
-                <div class="calendar-day ${isToday ? 'today' : ''} ${dotClass ? '' : ''}" data-date="${dateStr}">
+                <div class="calendar-day ${bgClass}" data-date="${dateStr}">
+                    ${isToday ? '<div class="today-label">Today</div>' : ''}
                     <div class="day-number">${day}</div>
-                    <div class="calendar-event">${dotClass ? `<span class='dot ${dotClass}'></span>` : ''}</div>
+                    ${bookingCount > 0 ? `<div class="booking-count">${bookingCount}</div>` : ''}
                 </div>
             `;
         }
@@ -829,52 +881,21 @@ document.addEventListener('DOMContentLoaded', function() {
         calendarGrid.innerHTML = calendarHTML;
     }
 
-    // Pagination & Filtering state
+    // Pagination state
     let currentPage = 1;
-    const itemsPerPage = 8;
 
-    // Active filters
-    let activeDate = '';
-    let activeWeek = '';
-    let activeMonth = '';
-
-    function getFilteredSchedules() {
-        let list = [...scheduleData];
-
-        if (activeMonth) {
-            // map month name to index (0-based)
-            const monthIndex = monthNames.map(m => m.toLowerCase()).indexOf(activeMonth);
-            if (monthIndex >= 0) {
-                list = list.filter(it => new Date(it.date).getMonth() === monthIndex);
-            }
-        }
-
-        if (activeDate) {
-            list = list.filter(it => it.date === activeDate);
-        }
-
-        if (activeWeek) {
-            // week of month = ceil(day/7)
-            const weekNum = parseInt(activeWeek);
-            list = list.filter(it => Math.ceil(new Date(it.date).getDate() / 7) === weekNum);
-        }
-
-        return list.sort((a,b) => new Date(a.date) - new Date(b.date));
-    }
-
-    function buildPagination(totalItems) {
-        const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+    function buildPagination(pagination) {
         const container = document.getElementById('schedulePagination');
         const pageInfo = document.getElementById('pageInfo');
         if (!container || !pageInfo) return;
 
-        // Clamp currentPage
-        if (currentPage > totalPages) currentPage = totalPages;
-        if (currentPage < 1) currentPage = 1;
+        const { current_page, last_page, from, to, total } = pagination;
+        
+        pageInfo.textContent = total > 0 
+            ? `Showing ${from}-${to} of ${total} schedules (Page ${current_page} of ${last_page})`
+            : 'No schedules found';
 
-        pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
-
-        // Build button-based pagination like Customer/Testimoni
+        // Build button-based pagination
         const makeBtn = (label, page, disabled = false, active = false) => {
             const btn = document.createElement('button');
             btn.className = 'pagination-btn' + (active ? ' active' : '');
@@ -882,51 +903,47 @@ document.addEventListener('DOMContentLoaded', function() {
             if (disabled) btn.disabled = true;
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                if (page === 'prev' && currentPage > 1) currentPage--;
-                else if (page === 'next' && currentPage < totalPages) currentPage++;
-                else if (typeof page === 'number') currentPage = page;
-                renderScheduleTable();
+                if (!disabled) {
+                    currentPage = page;
+                    fetchScheduleList(currentPage, filterDateInput.value);
+                }
             });
             return btn;
         };
 
         container.innerHTML = '';
         // Prev
-        const prevBtn = makeBtn('', 'prev', currentPage === 1);
+        const prevBtn = makeBtn('', Math.max(1, current_page - 1), current_page === 1);
         prevBtn.innerHTML = '<img src="{{ asset('images/kiri.svg') }}" alt="Previous" style="width: 16px; height: 16px;">';
         container.appendChild(prevBtn);
 
-        // Simple page buttons (no dots for now, as per Customer page style)
-        for (let p = 1; p <= totalPages; p++) {
-            container.appendChild(makeBtn(String(p), p, false, p === currentPage));
+        // Page buttons
+        for (let p = 1; p <= last_page; p++) {
+            container.appendChild(makeBtn(String(p), p, false, p === current_page));
         }
 
         // Next
-        const nextBtn = makeBtn('', 'next', currentPage === totalPages);
+        const nextBtn = makeBtn('', Math.min(last_page, current_page + 1), current_page === last_page);
         nextBtn.innerHTML = '<img src="{{ asset('images/kanan.svg') }}" alt="Next" style="width: 16px; height: 16px;">';
         container.appendChild(nextBtn);
     }
 
-    function renderScheduleTable() {
-        const list = getFilteredSchedules();
-        const start = (currentPage - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const currentList = list.slice(start, end);
-
-        if (currentList.length === 0) {
+    function renderScheduleTable(schedules, pagination) {
+        if (schedules.length === 0) {
             scheduleTableBody.innerHTML = '';
             noScheduleMessage.style.display = 'block';
+            document.getElementById('schedulePagination').innerHTML = '';
+            document.getElementById('pageInfo').textContent = '';
         } else {
             noScheduleMessage.style.display = 'none';
-            scheduleTableBody.innerHTML = currentList.map((schedule, idx) => {
-                const statusClass = schedule.status.toLowerCase().replace(' ', '-');
-                const remaining = schedule.capacity - schedule.booked;
+            scheduleTableBody.innerHTML = schedules.map((schedule, idx) => {
+                const statusClass = schedule.status_class || 'status-available';
 
                 return `
                     <tr class="schedule-row">
-                        <td style="text-align:center; font-weight:700; color:#E57300;">${start + idx + 1}</td>
+                        <td style="text-align:center; font-weight:700; color:#E57300;">${schedule.id}</td>
                         <td style="background:#fff;padding:16px 12px;font-weight:600;color:#8A6552;">
-                            ${formatScheduleDate(schedule.date)}
+                            ${schedule.date_formatted || schedule.date}
                         </td>
                         <td style="background:#fff;padding:16px 12px;text-align:center;font-weight:600;color:#8A6552;">
                             ${schedule.capacity}
@@ -935,25 +952,22 @@ document.addEventListener('DOMContentLoaded', function() {
                             ${schedule.booked}
                         </td>
                         <td style="background:#fff;padding:16px 12px;text-align:center;font-weight:600;color:#8A6552;">
-                            ${remaining}
+                            ${schedule.remaining}
                         </td>
                         <td style="background:#fff;padding:16px 12px;text-align:center;">
-                            <span class="status-${statusClass}">${schedule.status}</span>
+                            <span class="${statusClass}">${schedule.status}</span>
                         </td>
                         <td style="background:#fff;padding:16px 12px;text-align:center;">
                             <div style="display:flex;gap:8px;justify-content:center;">
-                                <button style="background:#F9B17A;color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='#F5A869';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#F9B17A';this.style.transform='translateY(0)'" onclick="editSchedule(${schedule.id})">
-                                    <i class="bi bi-pencil"></i> Edit
-                                </button>
-                                <button style="background:#dc3545;color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='#c82333';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#dc3545';this.style.transform='translateY(0)'" onclick="deleteSchedule(${schedule.id})">
-                                    <i class="bi bi-trash"></i> Delete
+                                <button style="background:#F9B17A;color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.background='#F5A869';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#F9B17A';this.style.transform='translateY(0)'" onclick="viewScheduleDetails('${schedule.date}')">
+                                    <i class="bi bi-eye"></i> View Details
                                 </button>
                             </div>
                         </td>
                     </tr>
                 `;
             }).join('');
-            buildPagination(list.length);
+            buildPagination(pagination);
         }
     }
 
@@ -981,93 +995,57 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = 'auto';
     }
 
-    // Event listeners
-    prevMonthBtn.addEventListener('click', function() {
-        currentMonth--;
-        if (currentMonth < 0) {
-            currentMonth = 11;
-            currentYear--;
+    // View schedule details function
+    window.viewScheduleDetails = async function(date) {
+        try {
+            const response = await fetch(`/admin/schedule/date/${date}`);
+            const data = await response.json();
+            
+            if (data.success) {
+                const bookingList = data.bookings.map((b, idx) => 
+                    `${idx + 1}. ${b.pet_name} (${b.pet_type}) - ${b.customer_name} - ${b.service_type} at ${b.booking_time}`
+                ).join('\n');
+                
+                alert(`Schedule Details for ${date}\n\nCapacity: ${data.capacity}\nBooked: ${data.booked}\nRemaining: ${data.remaining}\n\nBookings:\n${bookingList || 'No bookings'}`);
+            }
+        } catch (error) {
+            console.error('Error fetching schedule details:', error);
+            alert('Failed to load schedule details');
         }
-        renderCalendar();
-    });
+    };
 
-    nextMonthBtn.addEventListener('click', function() {
-        currentMonth++;
-        if (currentMonth > 11) {
-            currentMonth = 0;
-            currentYear++;
-        }
-        renderCalendar();
-    });
-
-    // No click-to-open calendar behavior
-
-    // Filters wiring
-    const filterDateEl = document.getElementById('filterDate');
-    const filterWeekEl = document.getElementById('filterWeek');
-    const monthFilterEl = document.getElementById('monthFilter');
-    const resetFiltersBtn = document.getElementById('resetFilters');
-
-    function applyFilters() {
-        // monthFilter values are lowercase english names
-        activeMonth = monthFilterEl && monthFilterEl.value ? monthFilterEl.value.toLowerCase() : '';
-        activeDate = filterDateEl && filterDateEl.value ? filterDateEl.value : '';
-        activeWeek = filterWeekEl && filterWeekEl.value ? filterWeekEl.value : '';
-        currentPage = 1;
-        renderScheduleTable();
+    // Event listeners for calendar navigation
+    if (prevMonthBtn) {
+        prevMonthBtn.addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            fetchCalendarData();
+        });
     }
 
-    if (filterDateEl) filterDateEl.addEventListener('change', applyFilters);
-    if (filterWeekEl) filterWeekEl.addEventListener('change', applyFilters);
-    if (monthFilterEl) monthFilterEl.addEventListener('change', applyFilters);
-    if (resetFiltersBtn) resetFiltersBtn.addEventListener('click', () => {
-        if (filterDateEl) filterDateEl.value = '';
-        if (filterWeekEl) filterWeekEl.value = '';
-        if (monthFilterEl) monthFilterEl.value = '';
-        activeDate = activeWeek = activeMonth = '';
-        currentPage = 1;
-        renderScheduleTable();
-    });
-
-    addScheduleBtn.addEventListener('click', showModal);
-    if (addCapacityBtn) addCapacityBtn.addEventListener('click', showModal);
-    if (viewMonthBtn && viewWeekBtn) {
-        viewMonthBtn.addEventListener('click', () => { viewMonthBtn.classList.add('active'); viewWeekBtn.classList.remove('active'); });
-        viewWeekBtn.addEventListener('click', () => { viewWeekBtn.classList.add('active'); viewMonthBtn.classList.remove('active'); /* week rendering could be added later */ });
+    if (nextMonthBtn) {
+        nextMonthBtn.addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            fetchCalendarData();
+        });
     }
-    closeModal.addEventListener('click', hideModal);
-    cancelBtn.addEventListener('click', hideModal);
 
-    // Close modal when clicking outside
-    scheduleModal.addEventListener('click', function(e) {
-        if (e.target === scheduleModal) {
-            hideModal();
-        }
-    });
+    // Event listener for date filter
+    if (filterDateInput) {
+        filterDateInput.addEventListener('change', () => {
+            currentPage = 1;
+            fetchScheduleList(currentPage, filterDateInput.value);
+        });
+    }
 
-    // Form submission
-    document.getElementById('scheduleForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        // Get form data
-        const formData = {
-            date: document.getElementById('scheduleDate').value,
-            capacity: parseInt(document.getElementById('petCapacity').value)
-        };
-
-        console.log('New schedule data:', formData);
-
-        // Here you would typically send the data to your Laravel backend
-        // Example: axios.post('/admin/schedule', formData)
-
-        alert('Schedule added successfully! (This is a demo - not actually saved)');
-        hideModal();
-
-        // Reset form
-        this.reset();
-    });
-
-    // Calendar day click handler
+    // Calendar day click handler with enhanced functionality
     document.addEventListener('click', function(e) {
         if (e.target.closest('.calendar-day') && !e.target.closest('.calendar-day').classList.contains('other-month')) {
             const dateElement = e.target.closest('.calendar-day');
@@ -1076,46 +1054,37 @@ document.addEventListener('DOMContentLoaded', function() {
             // Remove previous selection
             document.querySelectorAll('.calendar-day.selected').forEach(day => {
                 day.classList.remove('selected');
-                if (day.classList.contains('today')) {
-                    day.style.background = '#FFE0B5';
-                    day.style.color = '#CA2E55';
-                } else {
-                    day.style.background = '#fff';
-                    day.style.color = '#333';
-                }
             });
 
             // Add selection to clicked day
             dateElement.classList.add('selected');
-            dateElement.style.background = '#CA2E55';
-            dateElement.style.color = '#fff';
 
-            console.log('Selected date:', selectedDate);
-            // Here you can load schedule for selected date
+            // Set filter date and fetch schedule list
+            if (filterDateInput) {
+                filterDateInput.value = selectedDate;
+                currentPage = 1;
+                fetchScheduleList(currentPage, selectedDate);
+                
+                // Smooth scroll to schedule table
+                const scheduleTable = document.querySelector('.content-card');
+                if (scheduleTable) {
+                    setTimeout(() => {
+                        scheduleTable.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'start' 
+                        });
+                    }, 100);
+                }
+            }
+
+            // Fetch and show booking details
+            viewScheduleDetails(selectedDate);
         }
     });
 
-    // Edit schedule function
-    window.editSchedule = function(id) {
-        console.log('Edit schedule with ID:', id);
-        // Here you would typically load the schedule data and show the modal
-        // Example: loadScheduleData(id) then showModal()
-        alert(`Edit schedule ${id} (This is a demo)`);
-    };
-
-    // Delete schedule function
-    window.deleteSchedule = function(id) {
-        if (confirm('Are you sure you want to delete this schedule?')) {
-            console.log('Delete schedule with ID:', id);
-            // Here you would typically send DELETE request to your Laravel backend
-            // Example: axios.delete(`/admin/schedule/${id}`)
-            alert(`Schedule ${id} deleted! (This is a demo)`);
-        }
-    };
-
-    // Initialize page
-    renderCalendar();
-    renderScheduleTable();
+    // Initialize page - fetch data from backend
+    fetchCalendarData();
+    fetchScheduleList(currentPage);
 
     // No time input; default values handled server-side if needed
 });

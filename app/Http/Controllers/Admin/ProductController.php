@@ -20,11 +20,7 @@ class ProductController extends Controller
         $search = $request->string('q');
         if ($search->isNotEmpty()) {
             $term = (string) $search;
-            $query->where(function ($q) use ($term) {
-                $q->where('name', 'like', "%{$term}%")
-                  ->orWhere('sku', 'like', "%{$term}%")
-                  ->orWhere('description', 'like', "%{$term}%");
-            });
+            $query->where('name', 'like', "%{$term}%");
         }
 
         $category = $request->string('category');

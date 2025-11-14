@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Customer - Pet Boarding</title>
+    <title>Manage Customers - Pet Boarding</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
@@ -1229,43 +1229,43 @@
             <!-- Header -->
             <x-dashboard-header 
                 title="Customer Management"
-                subtitle="Manajemen Data Customer Pet Boarding"
+                subtitle="Customer Data Management for Pet Boarding"
                 icon="users"
             />
 
             <!-- Stats Summary -->
             <div class="stats-summary">
                 <div class="summary-card">
-                    <div class="summary-icon customers">
+                    {{-- <div class="summary-icon customers">
                         <img src="{{ asset('images/customer.svg') }}" alt="Customers" class="icon-image">
-                    </div>
+                    </div> --}}
                     <div class="summary-content">
                         <div class="summary-number" id="totalCustomers">125</div>
                         <div class="summary-label">Total Customers</div>
                     </div>
                 </div>
                 <div class="summary-card">
-                    <div class="summary-icon active">
+                    {{-- <div class="summary-icon active">
                         <img src="{{ asset('images/active.svg') }}" alt="Active" class="icon-image">
-                    </div>
+                    </div> --}}
                     <div class="summary-content">
                         <div class="summary-number">98</div>
                         <div class="summary-label">Active Customers</div>
                     </div>
                 </div>
                 <div class="summary-card">
-                    <div class="summary-icon pets">
+                    {{-- <div class="summary-icon pets">
                         <img src="{{ asset('images/pets.svg') }}" alt="Pets" class="icon-image">
-                    </div>
+                    </div> --}}
                     <div class="summary-content">
                         <div class="summary-number">156</div>
                         <div class="summary-label">Total Pets</div>
                     </div>
                 </div>
                 <div class="summary-card">
-                    <div class="summary-icon orders">
+                    {{-- <div class="summary-icon orders">
                         <img src="{{ asset('images/orders.svg') }}" alt="Orders" class="icon-image">
-                    </div>
+                    </div> --}}
                     <div class="summary-content">
                         <div class="summary-number">342</div>
                         <div class="summary-label">Total Orders</div>
@@ -1278,24 +1278,24 @@
                 <!-- Header with Search and Filters -->
                 <div class="content-header">
                     <div class="content-info">
-                        <div class="content-title">Data Customer</div>
-                        <div class="content-subtitle">Kelola dan pantau data customer pet boarding</div>
+                        <div class="content-title">Customer Data</div>
+                        <div class="content-subtitle">Manage and monitor pet boarding customers</div>
                     </div>
                     <div class="content-controls">
                         <!-- Status Filter -->
                         <select id="statusFilter" class="filter-select">
-                            <option value="">Semua Status</option>
-                            <option value="active">Aktif</option>
-                            <option value="inactive">Tidak Aktif</option>
+                            <option value="">All Statuses</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
                         </select>
                         <!-- Search Bar -->
                         <div class="search-box">
                             <i class="bi bi-search"></i>
-                            <input type="text" id="searchInput" placeholder="Cari customer..." class="search-input">
+                            <input type="text" id="searchInput" placeholder="Search customers..." class="search-input">
                         </div>
                         <!-- Add Customer Button -->
                         <button class="btn-add-customer" onclick="addCustomer()">
-                            <i class="bi bi-plus-circle"></i> Tambah Customer
+                            <i class="bi bi-plus-circle"></i> Add Customer
                         </button>
                     </div>
                 </div>
@@ -1306,11 +1306,11 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Nama Customer</th>
-                                <th>Kontak</th>
-                                <th>Alamat</th>
+                                <th>Customer Name</th>
+                                <th>Contact</th>
+                                <th>Address</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="customerTableBody">
@@ -1324,8 +1324,8 @@
                     <div class="no-data-icon">
                         <i class="bi bi-people"></i>
                     </div>
-                    <div class="no-data-title">Tidak ada customer</div>
-                    <div class="no-data-subtitle">Tidak ada data customer yang ditemukan.</div>
+                    <div class="no-data-title">No customers</div>
+                    <div class="no-data-subtitle">No customer data found.</div>
                 </div>
 
                 <!-- Pagination -->
@@ -1344,7 +1344,7 @@
     <div class="modal-overlay" id="editCustomerModal">
         <div class="modal-container">
             <div class="modal-header">
-                <h2 class="modal-title">Edit Data Customer</h2>
+                <h2 class="modal-title">Edit Customer</h2>
                 <button class="modal-close" onclick="closeModal()">
                     <i class="bi bi-x"></i>
                 </button>
@@ -1355,35 +1355,35 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="editCustomerName" class="form-label">Nama Lengkap</label>
+                            <label for="editCustomerName" class="form-label">Full Name</label>
                             <input type="text" id="editCustomerName" class="form-input"
-                                placeholder="Masukkan nama customer" required>
+                                placeholder="Enter customer name" required>
                         </div>
 
                         <div class="form-group">
                             <label for="editCustomerEmail" class="form-label">Email</label>
                             <input type="email" id="editCustomerEmail" class="form-input"
-                                placeholder="Masukkan alamat email" required>
+                                placeholder="Enter email address" required>
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="editCustomerPhone" class="form-label">Nomor Telepon</label>
+                            <label for="editCustomerPhone" class="form-label">Phone Number</label>
                             <input type="tel" id="editCustomerPhone" class="form-input"
-                                placeholder="Masukkan nomor telepon" required>
+                                placeholder="Enter phone number" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="editCustomerPets" class="form-label">Jumlah Hewan</label>
+                            <label for="editCustomerPets" class="form-label">Number of Pets</label>
                             <input type="number" id="editCustomerPets" class="form-input" min="0"
-                                placeholder="Jumlah hewan" required>
+                                placeholder="Number of pets" required>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="editCustomerAddress" class="form-label">Alamat Lengkap</label>
-                        <textarea id="editCustomerAddress" class="form-textarea" placeholder="Masukkan alamat lengkap"
+                        <label for="editCustomerAddress" class="form-label">Full Address</label>
+                        <textarea id="editCustomerAddress" class="form-textarea" placeholder="Enter full address"
                             required></textarea>
                     </div>
 
@@ -1391,14 +1391,14 @@
                         <label class="form-label">Status</label>
                         <div class="form-checkbox">
                             <input type="checkbox" id="editCustomerStatus">
-                            <span class="form-checkbox-label">Aktif (customer dapat melakukan pemesanan)</span>
+                            <span class="form-checkbox-label">Active (customer can place bookings)</span>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn btn-cancel" onclick="closeModal()">Batal</button>
-                <button class="modal-btn btn-save" onclick="saveCustomer()">Simpan Perubahan</button>
+                <button class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn btn-save" onclick="saveCustomer()">Save Changes</button>
             </div>
         </div>
     </div>
@@ -1406,7 +1406,7 @@
     <div class="modal-overlay" id="addCustomerModal">
         <div class="modal-container">
             <div class="modal-header">
-                <h2 class="modal-title">Tambah Data Customer</h2>
+                <h2 class="modal-title">Add Customer</h2>
                 <button class="modal-close" onclick="closeAddModal()">
                     <i class="bi bi-x"></i>
                 </button>
@@ -1415,31 +1415,31 @@
                 <form id="addCustomerForm">
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="addCustomerName" class="form-label">Nama Lengkap</label>
+                            <label for="addCustomerName" class="form-label">Full Name</label>
                             <input type="text" id="addCustomerName" class="form-input"
-                                placeholder="Masukkan nama customer" required>
+                                placeholder="Enter customer name" required>
                         </div>
                         <div class="form-group">
                             <label for="addCustomerEmail" class="form-label">Email</label>
                             <input type="email" id="addCustomerEmail" class="form-input"
-                                placeholder="Masukkan alamat email" required>
+                                placeholder="Enter email address" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="addCustomerPhone" class="form-label">Nomor Telepon</label>
+                            <label for="addCustomerPhone" class="form-label">Phone Number</label>
                             <input type="tel" id="addCustomerPhone" class="form-input"
-                                placeholder="Masukkan nomor telepon" required>
+                                placeholder="Enter phone number" required>
                         </div>
                         <div class="form-group">
-                            <label for="addCustomerPets" class="form-label">Jumlah Hewan</label>
+                            <label for="addCustomerPets" class="form-label">Number of Pets</label>
                             <input type="number" id="addCustomerPets" class="form-input" min="0"
-                                placeholder="Jumlah hewan" required>
+                                placeholder="Number of pets" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="addCustomerAddress" class="form-label">Alamat Lengkap</label>
-                        <textarea id="addCustomerAddress" class="form-textarea" placeholder="Masukkan alamat lengkap"
+                        <label for="addCustomerAddress" class="form-label">Full Address</label>
+                        <textarea id="addCustomerAddress" class="form-textarea" placeholder="Enter full address"
                             required></textarea>
                     </div>
                     <div class="form-group">
@@ -1452,8 +1452,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="modal-btn btn-cancel" onclick="closeAddModal()">Batal</button>
-                <button class="modal-btn btn-save" onclick="submitAddCustomer()">Tambah Customer</button>
+                <button class="modal-btn btn-cancel" onclick="closeAddModal()">Cancel</button>
+                <button class="modal-btn btn-save" onclick="submitAddCustomer()">Add Customer</button>
             </div>
         </div>
     </div>
@@ -1461,27 +1461,27 @@
  <div class="notification-modal" id="notificationModal">
         <div class="notification-content">
             <div class="notification-header">
-                <h3>Notifikasi</h3>
+                <h3>Notifications</h3>
                 <button onclick="toggleNotificationModal()">&times;</button>
             </div>
 
             <div id="notificationList">
                 <div class="notification-item unread">
-                    <h4>Booking Baru</h4>
-                    <p>User melakukan booking hari ini</p>
+                    <h4>New Booking</h4>
+                    <p>A user made a booking today</p>
                 </div>
                 <div class="notification-item unread">
-                    <h4>Pembayaran Diterima</h4>
-                    <p>Transaksi #123 berhasil</p>
+                    <h4>Payment Received</h4>
+                    <p>Transaction #123 successful</p>
                 </div>
                 <div class="notification-item">
-                    <h4>Testimoni Baru</h4>
-                    <p>Ada ulasan dari pelanggan</p>
+                    <h4>New Testimonial</h4>
+                    <p>A customer left a review</p>
                 </div>
             </div>
 
             <div class="notification-footer">
-                <button onclick="markAllAsRead()">Tandai Semua Dibaca</button>
+                <button onclick="markAllAsRead()">Mark All as Read</button>
             </div>
         </div>
     </div>
@@ -1583,7 +1583,7 @@ document.addEventListener('keydown', function(event) {
                 renderCustomers();
             } catch (e) {
                 console.error(e);
-                alert('Gagal memuat data customer.');
+                alert('Failed to load customer data.');
             }
         }
 
@@ -1637,7 +1637,7 @@ document.addEventListener('keydown', function(event) {
                 customerTableBody.innerHTML = currentCustomers.map((customer, index) => {
                     const globalIndex = (currentPage - 1) * itemsPerPage + index + 1;
                     const statusClass = customer.status === 'active' ? 'status-active' : 'status-inactive';
-                    const statusText = customer.status === 'active' ? 'Aktif' : 'Tidak Aktif';
+                    const statusText = customer.status === 'active' ? 'Active' : 'Inactive';
 
                     return `
                         <tr data-status="${customer.status}">
@@ -1869,13 +1869,13 @@ document.addEventListener('keydown', function(event) {
                     },
                     body: JSON.stringify({ name, email, phone, address, status })
                 });
-                if (!res.ok) throw new Error('Gagal memperbarui data');
+                if (!res.ok) throw new Error('Failed to update data');
                 await fetchCustomers(currentPage);
-                alert('Data customer berhasil diperbarui!');
+                alert('Customer data updated successfully!');
                 closeModal();
             } catch (e) {
                 console.error(e);
-                alert('Gagal menyimpan perubahan.');
+                alert('Failed to save changes.');
             }
         }
 
@@ -1883,7 +1883,7 @@ document.addEventListener('keydown', function(event) {
         function viewCustomer(id) {
             const customer = customers.find(c => c.id === id);
             if (customer) {
-                alert(`Detail Customer:\n\nNama: ${customer.name}\nEmail: ${customer.email}\nTelepon: ${customer.phone}\nAlamat: ${customer.address}\nStatus: ${customer.status === 'active' ? 'Aktif' : 'Tidak Aktif'}\nJumlah Hewan: ${customer.pets}\nJumlah Order: ${customer.orders}`);
+                alert(`Customer Details:\n\nName: ${customer.name}\nEmail: ${customer.email}\nPhone: ${customer.phone}\nAddress: ${customer.address}\nStatus: ${customer.status === 'active' ? 'Active' : 'Inactive'}\nNumber of Pets: ${customer.pets}\nTotal Orders: ${customer.orders}`);
             }
         }
 
@@ -1893,7 +1893,7 @@ document.addEventListener('keydown', function(event) {
 
         async function deleteCustomer(id) {
             const customer = customers.find(c => c.id === id);
-            if (customer && confirm(`Apakah Anda yakin ingin menghapus customer ini?\n\n${customer.name}\n${customer.email}`)) {
+            if (customer && confirm(`Are you sure you want to delete this customer?\n\n${customer.name}\n${customer.email}`)) {
                 try {
                     const res = await fetch(`/admin/customers/${id}`, {
                         method: 'DELETE',
@@ -1903,12 +1903,12 @@ document.addEventListener('keydown', function(event) {
                             'X-Requested-With': 'XMLHttpRequest'
                         }
                     });
-                    if (!res.ok) throw new Error('Gagal menghapus');
+                    if (!res.ok) throw new Error('Failed to delete');
                     await fetchCustomers(currentPage);
-                    alert('Customer berhasil dihapus!');
+                    alert('Customer deleted successfully!');
                 } catch (e) {
                     console.error(e);
-                    alert('Gagal menghapus customer.');
+                    alert('Failed to delete customer.');
                 }
             }
         }

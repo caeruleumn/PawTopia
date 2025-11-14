@@ -56,7 +56,7 @@
             <!-- Page Header -->
             <div class="page-header">
                 <div class="header-content">
-                    <h1 class="page-title">Customer Testimonials</h1>
+                    <h1 class="page-title">Customer Feedback</h1>
                     <p class="page-subtitle">Manage and review customer feedback</p>
                 </div>
                 <div class="header-controls">
@@ -76,7 +76,7 @@
                             <input type="text" 
                                    name="search" 
                                    class="search-input" 
-                                   placeholder="Search testimonials..."
+                                   placeholder="Search feedback..."
                                    value="{{ request('search') }}">
                         </div>
                         @if(request('search') || request('rating'))
@@ -237,27 +237,27 @@
 <div class="notification-modal" id="notificationModal">
     <div class="notification-content">
         <div class="notification-header">
-            <h3>Notifikasi</h3>
+            <h3>Notifications</h3>
             <button onclick="toggleNotificationModal()">&times;</button>
         </div>
 
         <div id="notificationList">
             <div class="notification-item unread">
-                <h4>Booking Baru</h4>
-                <p>User melakukan booking hari ini</p>
+                <h4>New Booking</h4>
+                <p>A user made a booking today</p>
             </div>
             <div class="notification-item unread">
-                <h4>Pembayaran Diterima</h4>
-                <p>Transaksi #123 berhasil</p>
+                <h4>Payment Received</h4>
+                <p>Transaction #123 successful</p>
             </div>
             <div class="notification-item">
-                <h4>Testimoni Baru</h4>
-                <p>Ada ulasan dari pelanggan</p>
+                <h4>New Testimonial</h4>
+                <p>A customer left a review</p>
             </div>
         </div>
 
         <div class="notification-footer">
-            <button onclick="markAllAsRead()">Tandai Semua Dibaca</button>
+            <button onclick="markAllAsRead()">Mark All as Read</button>
         </div>
     </div>
 </div>
