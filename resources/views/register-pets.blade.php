@@ -13,13 +13,13 @@
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #fff0eb 0%, #ffffff 100%);
             margin: 0;
-            padding: 20px;
+            padding: 0;              /* hilangkan padding supaya footer menempel ke kiri/kanan */
             color: #5C4033;
         }
 
         .container {
             max-width: 900px;
-            margin: 40px auto;
+            margin: 40px auto 60px;   /* beri jarak atas & bawah saja, bukan kiri/kanan */
             background: white;
             border-radius: 24px;
             padding: 40px;

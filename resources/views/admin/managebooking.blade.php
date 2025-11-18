@@ -707,14 +707,8 @@
         }
 
         .btn-edit {
-            background: #FF9800;
+            background: #E57300;
             color: #fff;
-        }
-
-        .btn-edit:hover {
-            background: #e68a00;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
         }
 
         .btn-delete {
@@ -726,6 +720,18 @@
             background: #C82333;
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        }
+
+        /* Neutral cancel button (for dialogs) */
+        .btn-cancel {
+            background: #F7F5F2;           /* abu/krem netral */
+            color: #6B4F3A;
+            border: 1px solid rgba(169, 123, 93, 0.3);
+            border-radius: 12px;
+            padding: 10px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
         }
 
         /* No Data Message */
@@ -1333,7 +1339,7 @@
                     <input type="number" name="price" min="0" step="1000" value="0" required />
                 </div>
                 <div class="form-actions">
-                    <button type="button" class="btn-delete" onclick="closeAddBookingModal()">Cancel</button>
+                    <button type="button" class="btn-cancel" onclick="closeAddBookingModal()">Cancel</button>
                     <button type="submit" id="addBookingSubmitBtn" class="btn-add">Save</button>
                 </div>
             </form>
@@ -1365,7 +1371,7 @@
                     </select>
                 </div>
                 <div class="form-actions">
-                    <button type="button" class="btn-delete" onclick="closeStatusModal()">Cancel</button>
+                    <button type="button" class="btn-cancel" onclick="closeStatusModal()">Cancel</button>
                     <button type="submit" class="btn-add">Update Status</button>
                 </div>
             </form>
@@ -2164,16 +2170,7 @@
     box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
 }
 
-.btn-edit {
-    background: #E57300;
-    color: #fff;
-}
-
-.btn-edit:hover {
-    background: #CC6600;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(229, 115, 0, 0.3);
-}
+/* (duplicate .btn-edit styles removed; use the main definition above) */
 
 .btn-status {
     background: #4CAF50;
@@ -3073,16 +3070,16 @@ document.addEventListener('keydown', function(event) {
                         <td>
                             <div class="action-buttons">
                                 <button class="action-btn btn-view" onclick="viewBooking(${booking.id})">
-                                    <i class="bi bi-eye"></i> View
+                                 View
                                 </button>
                                 <button class="action-btn btn-edit" onclick="editBooking(${booking.id})">
-                                    <i class="bi bi-pencil-square"></i> Edit
+                                    Edit
                                 </button>
                                 <button class="action-btn btn-status" onclick="openStatusModal(${booking.id})">
-                                    <i class="bi bi-arrow-repeat"></i> Update Status
+                                    Update Status
                                 </button>
                                 <button class="action-btn btn-delete" onclick="deleteBooking(${booking.id})">
-                                    <i class="bi bi-trash"></i> Delete
+                                    Delete
                                 </button>
                             </div>
                         </td>

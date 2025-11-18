@@ -647,8 +647,8 @@
                                     <td>{{ (int) $p->stock }}</td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button class="action-btn btn-edit" data-action="edit"><i class="bi bi-pencil"></i> Edit</button>
-                                            <button class="action-btn btn-delete" data-action="delete"><i class="bi bi-trash"></i> Delete</button>
+                                            <button class="action-btn btn-edit" data-action="edit">Edit</button>
+                                            <button class="action-btn btn-delete" data-action="delete">Delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -691,8 +691,8 @@
                                     <td>{{ (int) $p->stock }}</td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button class="action-btn btn-edit" data-action="edit"><i class="bi bi-pencil"></i> Edit</button>
-                                            <button class="action-btn btn-delete" data-action="delete"><i class="bi bi-trash"></i> Delete</button>
+                                            <button class="action-btn btn-edit" data-action="edit"> Edit</button>
+                                            <button class="action-btn btn-delete" data-action="delete"> Delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -735,8 +735,8 @@
                                     <td>{{ (int) $p->stock }}</td>
                                     <td>
                                         <div class="action-buttons">
-                                            <button class="action-btn btn-edit" data-action="edit"><i class="bi bi-pencil"></i> Edit</button>
-                                            <button class="action-btn btn-delete" data-action="delete"><i class="bi bi-trash"></i> Delete</button>
+                                            <button class="action-btn btn-edit" data-action="edit"> Edit</button>
+                                            <button class="action-btn btn-delete" data-action="delete"> Delete</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -958,8 +958,8 @@
                 <td>${p.stock}</td>
                 <td>
                     <div class="action-buttons">
-                        <button class="action-btn btn-edit" data-action="edit"><i class="bi bi-pencil"></i> Edit</button>
-                        <button class="action-btn btn-delete" data-action="delete"><i class="bi bi-trash"></i> Delete</button>
+                        <button class="action-btn btn-edit" data-action="edit"> Edit</button>
+                        <button class="action-btn btn-delete" data-action="delete"> Delete</button>
                     </div>
                 </td>
             </tr>

@@ -31,7 +31,8 @@
 
         .profile-card {
             background: white;
-            width: 850px;
+            width: 95%;              /* hampir penuh, sama seperti form booking */
+            max-width: 1100px;       /* batasi di layar besar */
             border-radius: 25px;
             box-shadow:
                 0 20px 40px rgba(0, 0, 0, 0.08),

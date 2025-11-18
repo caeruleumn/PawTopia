@@ -19,24 +19,32 @@
         }
 
         .container {
-            max-width: 700px;
-            margin: auto;
+            max-width: 95%;  /* hampir penuh, masih ada sedikit ruang di kiri/kanan */
+            margin: 0 auto;
             padding: 20px;
         }
 
         /* ===== HERO SECTION ===== */
         .hero {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between; /* teks di kiri, gambar di kanan */
             align-items: center;
-            padding: 20px 40px;
+            padding: 20px 20px 20px 40px; /* sedikit padding kanan supaya gambar mendekati tepi */
             background: linear-gradient(to right, #fbe1c3, #fff);
         }
 
         .hero-text {
             max-width: 60%;
-            text-align: center;
-            margin: 0 auto;
+            text-align: center;    /* judul & subtitle tetap rata tengah */
+            margin: 0 auto;        /* blok teks kira-kira di tengah area hero */
+        }
+
+        .hero-image {
+            /* atur posisi gambar kanan/kiri/atas/bawah di sini */
+            margin-top: 0px;      /* jarak dari atas */
+            margin-right: -20px;   /* mepet ke kanan */
+            margin-bottom: -20px;  /* jarak dari bawah */
+            margin-left: 0px;      /* dekat dengan teks */
         }
 
         .hero-title {
@@ -61,7 +69,7 @@
 
         .hero-image img {
             display: block;
-            max-height: 180px;
+            max-height: 250px; /* besarkan sedikit gambar */
         }
 
         /* ===== FORM SECTIONS ===== */
@@ -90,6 +98,18 @@
             display: flex;
             gap: 20px;
             margin-bottom: 15px;
+        }
+
+        .delivery-options-row {
+            align-items: flex-start;      /* label judul sejajar atas */
+        }
+
+        /* Supaya radio button di Delivery Options tidak melebar dan teksnya nempel rapi */
+        .delivery-options-row input[type="radio"] {
+            flex: 0 0 auto;
+            padding: 0;
+            border: none;
+            width: auto;
         }
 
         .form-field {
@@ -447,7 +467,7 @@
     <!-- Delivery Options -->
     <div class="section">
         <div class="section-title"><img src="{{ asset('images/In Transit.svg') }}" alt="">Delivery Options</div>
-        <div class="form-group">
+        <div class="form-group delivery-options-row">
             <div class="form-field">
                 <label style="font-weight: 600; margin-bottom: 10px;">Drop-off (Start of boarding)</label>
                 <label style="display: flex; align-items: center; margin-bottom: 8px;">

@@ -755,7 +755,11 @@
 <section class="cozy-container">
     <div class="cozy-left">
         <p>Your pet deserves the best—reserve their cozy stay today!</p>
-        <a href="{{ route('booking') }}" class="book-btn">Book a Spot</a>
+        @if(Auth::guard('member')->check())
+            <a href="{{ route('booking') }}" class="book-btn">Book a Spot</a>
+        @else
+            <a href="{{ url('/login') }}" class="book-btn">Book a Spot</a>
+        @endif
     </div>
     <div class="cozy-right">
         <img src="{{ asset('images/orang.svg') }}" alt="Woman holding a cat" />
