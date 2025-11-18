@@ -37,4 +37,16 @@ class Member extends Authenticatable
     {
         return $this->hasMany(Booking::class);
     }
+
+    // Relationship dengan Pet
+    public function pets()
+    {
+        return $this->hasMany(Pet::class);
+    }
+
+    // Get active pets only
+    public function activePets()
+    {
+        return $this->hasMany(Pet::class)->where('is_active', true);
+    }
 }

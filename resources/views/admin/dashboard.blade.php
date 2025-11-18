@@ -17,9 +17,9 @@
                     <img src="{{ asset('images/1.svg') }}" alt="icon" class="card-icon-top">
                     <img src="{{ asset('images/11.svg') }}" alt="icon" class="card-icon-bottom">
                     <div class="card-title">Total Bookings</div>
-                    <div class="card-number">70</div>
+                    <div class="card-number">{{ $totalBookings }}</div>
                     <div class="card-subtitle">
-                        15 bookings for this week
+                        {{ $thisWeekBookings }} booking{{ $thisWeekBookings != 1 ? 's' : '' }} for this week
                     </div>
                 </div>
 
@@ -27,9 +27,9 @@
                     <img src="{{ asset('images/2.svg') }}" alt="icon" class="card-icon-top">
                     <img src="{{ asset('images/22.svg') }}" alt="icon" class="card-icon-bottom">
                     <div class="card-title">Registered Users</div>
-                    <div class="card-number">27</div>
+                    <div class="card-number">{{ $totalMembers }}</div>
                     <div class="card-subtitle">
-                        2 new users in 3 days
+                        {{ $recentMembers }} new user{{ $recentMembers != 1 ? 's' : '' }} in 3 days
                     </div>
                 </div>
 
@@ -37,9 +37,9 @@
                     <img src="{{ asset('images/3.svg') }}" alt="icon" class="card-icon-top">
                     <img src="{{ asset('images/33.svg') }}" alt="icon" class="card-icon-bottom">
                     <div class="card-title">Today's Pick-Up</div>
-                    <div class="card-number">6</div>
+                    <div class="card-number">{{ $todayPickup }}</div>
                     <div class="card-subtitle">
-                        4 completed, 2 remaining
+                        {{ $todayPickupCompleted }} completed, {{ $todayPickupRemaining }} remaining
                     </div>
                 </div>
 
@@ -47,9 +47,9 @@
                     <img src="{{ asset('images/4.svg') }}" alt="icon" class="card-icon-top">
                     <img src="{{ asset('images/44.svg') }}" alt="icon" class="card-icon-bottom">
                     <div class="card-title">Reviews</div>
-                    <div class="card-number">46</div>
+                    <div class="card-number">{{ $totalReviews }}</div>
                     <div class="card-subtitle">
-                        46 reviews recorded
+                        {{ $totalReviews }} review{{ $totalReviews != 1 ? 's' : '' }} recorded
                     </div>
                 </div>
             </div>
@@ -86,16 +86,16 @@
                     </div>
                     <div class="calendar-legend">
                         <div class="legend-item">
-                            <span class="legend-dot busy"></span>
-                            <span>High bookings</span>
+                            <span class="legend-dot" style="background:#E57300;"></span>
+                            <span>Busy (10+ bookings)</span>
                         </div>
                         <div class="legend-item">
-                            <span class="legend-dot moderate"></span>
-                            <span>Moderate</span>
+                            <span class="legend-dot" style="background:#FFA500;"></span>
+                            <span>Moderate (5-9 bookings)</span>
                         </div>
                         <div class="legend-item">
-                            <span class="legend-dot available"></span>
-                            <span>Available</span>
+                            <span class="legend-dot" style="background:#4CAF50;"></span>
+                            <span>Available (1-4 bookings)</span>
                         </div>
                     </div>
                 </div>
@@ -105,25 +105,40 @@
                     <div class="activity-header">
                         <div class="activity-title">
                             Today's Activities
-                            <span class="activity-count">8 today</span>
+                            <span class="activity-count">{{ $todayActivities }} today</span>
                         </div>
                     </div>
                     <div class="activity-timeline" id="activityTimeline">
-                        <!-- Activities will be loaded here -->
+                        @forelse($recentActivities as $activity)
+                            <div class="activity-item">
+                                <div class="activity-icon-wrapper {{ $activity['status'] == 'confirmed' ? 'success' : 'info' }}">
+                                    <img src="{{ asset('images/booking.svg') }}" alt="Activity" class="activity-image">
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-text">{{ $activity['text'] }}</div>
+                                    <div class="activity-detail">{{ $activity['detail'] }}</div>
+                                </div>
+                                <div class="activity-time">{{ $activity['time'] }}</div>
+                            </div>
+                        @empty
+                            <div style="text-align:center;padding:20px;color:#999;">
+                                No activities today
+                            </div>
+                        @endforelse
                     </div>
                     <div class="activity-summary">
                         <div class="summary-item">
-                            <div class="summary-number">8</div>
+                            <div class="summary-number">{{ $dogsBoarded }}</div>
                             <div class="summary-label">Dogs Boarded</div>
                         </div>
                         <div class="summary-divider"></div>
                         <div class="summary-item">
-                            <div class="summary-number">4</div>
+                            <div class="summary-number">{{ $catsBoarded }}</div>
                             <div class="summary-label">Cats Boarded</div>
                         </div>
                         <div class="summary-divider"></div>
                         <div class="summary-item">
-                            <div class="summary-number">3</div>
+                            <div class="summary-number">{{ $todayPickup }}</div>
                             <div class="summary-label">Pick-ups Today</div>
                         </div>
                     </div>
@@ -150,24 +165,32 @@
                 <!-- Stats for pet boarding business -->
                 <div class="chart-stats">
                     <div class="stat-item">
-                        <div class="stat-value">Rp 12.5M</div>
+                        <div class="stat-value">Rp {{ number_format($monthlyRevenue / 1000000, 1) }}M</div>
                         <div class="stat-label">Monthly Revenue</div>
-                        <div class="stat-change positive">+15.2%</div>
+                        <div class="stat-change {{ $monthlyRevenue > 0 ? 'positive' : 'neutral' }}">
+                            {{ $monthlyRevenue > 0 ? 'This Month' : 'No data' }}
+                        </div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">156</div>
+                        <div class="stat-value">{{ $monthlyPets }}</div>
                         <div class="stat-label">Total Pets Boarded</div>
-                        <div class="stat-change positive">+8.5%</div>
+                        <div class="stat-change {{ $monthlyPets > 0 ? 'positive' : 'neutral' }}">
+                            This Month
+                        </div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">4.8★</div>
+                        <div class="stat-value">{{ number_format($averageRating, 1) }}★</div>
                         <div class="stat-label">Average Rating</div>
-                        <div class="stat-change neutral">+0.2</div>
+                        <div class="stat-change {{ $averageRating >= 4 ? 'positive' : 'neutral' }}">
+                            From Testimonials
+                        </div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value">85%</div>
+                        <div class="stat-value">{{ $capacityUtilization }}%</div>
                         <div class="stat-label">Capacity Utilization</div>
-                        <div class="stat-change positive">+5.3%</div>
+                        <div class="stat-change {{ $capacityUtilization > 70 ? 'positive' : 'neutral' }}">
+                            Active Now
+                        </div>
                     </div>
                 </div>
 
@@ -205,7 +228,28 @@
                             </tr>
                         </thead>
                         <tbody id="bookingTableBody">
-                            <!-- Table rows will be populated by JavaScript -->
+                            @forelse($recentBookings as $index => $booking)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $booking->member->name ?? 'N/A' }}</td>
+                                    <td>{{ $booking->pet_name }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($booking->booking_date)->format('d/m/Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($booking->booking_date)->format('d/m/Y') }}</td>
+                                    <td>{{ ucfirst($booking->pet_type) }}</td>
+                                    <td>Rp {{ number_format($booking->total_price, 0, ',', '.') }}</td>
+                                    <td>
+                                        <span class="status-badge status-{{ $booking->status }}">
+                                            {{ ucfirst($booking->status) }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="8" style="text-align:center;padding:40px;">
+                                        <div style="color:#999;">No bookings found</div>
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -217,27 +261,27 @@
     <div class="notification-modal" id="notificationModal">
         <div class="notification-content">
             <div class="notification-header">
-                <h3>Notifikasi</h3>
+                <h3>Notifications</h3>
                 <button onclick="toggleNotificationModal()">&times;</button>
             </div>
 
             <div id="notificationList">
                 <div class="notification-item unread">
-                    <h4>Booking Baru</h4>
-                    <p>User melakukan booking hari ini</p>
+                    <h4>New Booking</h4>
+                    <p>A user made a booking today</p>
                 </div>
                 <div class="notification-item unread">
-                    <h4>Pembayaran Diterima</h4>
-                    <p>Transaksi #123 berhasil</p>
+                    <h4>Payment Received</h4>
+                    <p>Transaction #123 successful</p>
                 </div>
                 <div class="notification-item">
-                    <h4>Testimoni Baru</h4>
-                    <p>Ada ulasan dari pelanggan</p>
+                    <h4>New Testimonial</h4>
+                    <p>A customer left a review</p>
                 </div>
             </div>
 
             <div class="notification-footer">
-                <button onclick="markAllAsRead()">Tandai Semua Dibaca</button>
+                <button onclick="markAllAsRead()">Mark All as Read</button>
             </div>
         </div>
     </div>
@@ -619,6 +663,7 @@
         .calendar-day {
             height: 40px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             color: #6B4F3A;
@@ -630,9 +675,28 @@
             background: rgba(255, 255, 255, 0.3);
         }
 
+        .calendar-day .day-number {
+            font-size: 0.9rem;
+        }
+
+        .calendar-day .booking-count {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: #E57300;
+            color: white;
+            font-size: 0.65rem;
+            padding: 1px 4px;
+            border-radius: 8px;
+            font-weight: 700;
+            min-width: 16px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
         .calendar-day:hover {
             background: rgba(255, 255, 255, 0.8);
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
         .calendar-day.today {
@@ -642,21 +706,37 @@
             box-shadow: 0 4px 12px rgba(229, 115, 0, 0.3);
         }
 
+        .calendar-day.today .booking-count {
+            background: white;
+            color: #E57300;
+        }
+
         .calendar-day.other-month {
             color: #ccc;
             background: transparent;
         }
 
-        .calendar-day.busy::after {
-            content: '';
-            position: absolute;
-            bottom: 4px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 4px;
-            background: #E57300;
-            border-radius: 50%;
+        .calendar-day.busy {
+            background: rgba(229, 115, 0, 0.2);
+            border: 2px solid #E57300;
+        }
+
+        .calendar-day.moderate {
+            background: rgba(255, 165, 0, 0.15);
+            border: 2px solid #FFA500;
+        }
+
+        .calendar-day.moderate .booking-count {
+            background: #FFA500;
+        }
+
+        .calendar-day.available {
+            background: rgba(76, 175, 80, 0.1);
+            border: 2px solid #4CAF50;
+        }
+
+        .calendar-day.available .booking-count {
+            background: #4CAF50;
         }
 
         .calendar-legend {
@@ -1476,16 +1556,17 @@
         // Existing code
         document.addEventListener('DOMContentLoaded', function () {
             generateCalendar();
-            loadBookingData();
-            loadActivityData();
+            // loadBookingData(); // Removed - now using backend data
+            // loadActivityData(); // Removed - now using backend data
             initializeSalesChart();
             initializeSearch();
         });
 
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
+        let bookingData = {};
 
-        function generateCalendar() {
+        async function generateCalendar() {
             const calendarDays = document.getElementById('calendarDays');
             const currentMonthElement = document.getElementById('currentMonth');
             const today = new Date();
@@ -1496,14 +1577,20 @@
                 'July', 'August', 'September', 'October', 'November', 'December'];
             currentMonthElement.textContent = `${monthNames[currentMonth]} ${currentYear}`;
 
+            // Fetch booking data from API
+            try {
+                const response = await fetch(`/admin/dashboard/calendar?month=${currentMonth + 1}&year=${currentYear}`);
+                const data = await response.json();
+                bookingData = data.bookings || {};
+            } catch (error) {
+                console.error('Error fetching calendar data:', error);
+                bookingData = {};
+            }
+
             // Get first day of month and number of days
             const firstDay = new Date(currentYear, currentMonth, 1).getDay();
             const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
             const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
-
-            // Sample booking data for calendar dots
-            const busyDays = [5, 12, 18, 23, 28];
-            const moderateDays = [3, 9, 15, 20, 25];
 
             calendarDays.innerHTML = '';
 
@@ -1519,16 +1606,37 @@
             for (let day = 1; day <= daysInMonth; day++) {
                 const dayElement = document.createElement('div');
                 dayElement.className = 'calendar-day';
-                dayElement.textContent = day;
+                
+                // Create date string for lookup
+                const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const bookingCount = bookingData[dateStr]?.total_booked || 0;
+
+                // Add day number
+                const dayNumber = document.createElement('div');
+                dayNumber.className = 'day-number';
+                dayNumber.textContent = day;
+                dayElement.appendChild(dayNumber);
 
                 // Highlight today
                 if (day === todayDate && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
                     dayElement.classList.add('today');
                 }
 
-                // Add booking indicators
-                if (busyDays.includes(day)) {
-                    dayElement.classList.add('busy');
+                // Add booking indicators based on count
+                if (bookingCount > 0) {
+                    const countBadge = document.createElement('div');
+                    countBadge.className = 'booking-count';
+                    countBadge.textContent = bookingCount;
+                    dayElement.appendChild(countBadge);
+
+                    // Add class based on booking count
+                    if (bookingCount >= 10) {
+                        dayElement.classList.add('busy');
+                    } else if (bookingCount >= 5) {
+                        dayElement.classList.add('moderate');
+                    } else {
+                        dayElement.classList.add('available');
+                    }
                 }
 
                 calendarDays.appendChild(dayElement);
@@ -1563,142 +1671,9 @@
             generateCalendar();
         }
 
-        function loadActivityData() {
-            const activities = [
-                {
-                    image: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=100&h=100&fit=crop&crop=face',
-                    wrapperClass: 'success',
-                    text: 'New dog boarding registered',
-                    detail: 'Golden Retriever "Max" checked in for 5 days',
-                    time: '2m ago'
-                },
-                {
-                    image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=100&h=100&fit=crop&crop=face',
-                    wrapperClass: 'primary',
-                    text: 'Cat grooming completed',
-                    detail: 'Persian cat "Luna" grooming service finished',
-                    time: '15m ago'
-                },
-                {
-                    image: 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=100&h=100&fit=crop&crop=face',
-                    wrapperClass: 'warning',
-                    text: 'Feeding schedule updated',
-                    detail: 'Special diet plan assigned for German Shepherd',
-                    time: '21m ago'
-                },
-                {
-                    image: 'https://images.unsplash.com/photo-1561037404-61cd46aa615b?w=100&h=100&fit=crop&crop=face',
-                    wrapperClass: 'info',
-                    text: 'Pet pickup scheduled',
-                    detail: 'Labrador "Buddy" pickup at 3:00 PM today',
-                    time: '1h ago'
-                },
-                {
-                    image: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=100&h=100&fit=crop&crop=face',
-                    wrapperClass: 'success',
-                    text: 'New 5-star review received',
-                    detail: '"Amazing care for my cat!" - Sarah M.',
-                    time: '2h ago'
-                }
-            ];
+        // loadActivityData() - REMOVED, now using backend data from Blade template
 
-            const timeline = document.getElementById('activityTimeline');
-            timeline.innerHTML = '';
-
-            activities.forEach(activity => {
-                const item = document.createElement('div');
-                item.className = 'activity-item';
-                item.innerHTML = `
-                <div class="activity-icon-wrapper ${activity.wrapperClass}">
-                    <img src="${activity.image}" alt="Activity" class="activity-image">
-                </div>
-                <div class="activity-content">
-                    <div class="activity-text">${activity.text}</div>
-                    <div class="activity-detail">${activity.detail}</div>
-                </div>
-                <div class="activity-time">${activity.time}</div>
-            `;
-                timeline.appendChild(item);
-            });
-        }
-
-        function loadBookingData() {
-            // Sample booking data for pet boarding
-            const bookings = [
-                {
-                    id: 1,
-                    ownerName: 'John Doe',
-                    petName: 'Buddy',
-                    startDate: '2025-08-19',
-                    endDate: '2025-08-21',
-                    animalType: 'Dog',
-                    totalPayment: 'Rp 150,000',
-                    status: 'pending'
-                },
-                {
-                    id: 2,
-                    ownerName: 'Jane Smith',
-                    petName: 'Whiskers',
-                    startDate: '2025-08-19',
-                    endDate: '2025-08-20',
-                    animalType: 'Cat',
-                    totalPayment: 'Rp 100,000',
-                    status: 'on-pickup'
-                },
-                {
-                    id: 3,
-                    ownerName: 'Mike Johnson',
-                    petName: 'Luna',
-                    startDate: '2025-08-19',
-                    endDate: '2025-08-22',
-                    animalType: 'Cat',
-                    totalPayment: 'Rp 180,000',
-                    status: 'pending'
-                },
-                {
-                    id: 4,
-                    ownerName: 'Sarah Wilson',
-                    petName: 'Max',
-                    startDate: '2025-08-19',
-                    endDate: '2025-08-25',
-                    animalType: 'Dog',
-                    totalPayment: 'Rp 350,000',
-                    status: 'completed'
-                },
-                {
-                    id: 5,
-                    ownerName: 'David Brown',
-                    petName: 'Rocky',
-                    startDate: '2025-08-19',
-                    endDate: '2025-08-23',
-                    animalType: 'Dog',
-                    totalPayment: 'Rp 200,000',
-                    status: 'cancelled'
-                }
-            ];
-
-            const tableBody = document.getElementById('bookingTableBody');
-            tableBody.innerHTML = '';
-
-            bookings.forEach((booking, index) => {
-                const row = document.createElement('tr');
-                const statusClass = String(booking.status).toLowerCase().replace(/\s+/g, '-');
-                const statusText = String(booking.status)
-                    .replace(/-/g, ' ')
-                    .replace(/\b\w/g, c => c.toUpperCase());
-                row.innerHTML = `
-                <td>${index + 1}.</td>
-                <td>${booking.ownerName}</td>
-                <td>${booking.petName}</td>
-                <td>${booking.startDate}</td>
-                <td>${booking.endDate}</td>
-                <td>${booking.animalType}</td>
-                <td>${booking.totalPayment}</td>
-                <td><span class="status-badge status-${statusClass}">${statusText}</span></td>
-            `;
-                tableBody.appendChild(row);
-            });
-        }
+        // loadBookingData() - REMOVED, now using backend data from Blade template
 
         function initializeSalesChart() {
             const container = document.querySelector('.chart-container');

@@ -156,7 +156,7 @@
             <p><span>📞 Phone:</span> +62 812 3456 7890</p>
             <p><span>📧 Email:</span> hello@pawtopia.com</p>
             <p><span>⏰ Hours:</span> Mon-Sat, 9 AM - 6 PM</p>
-            <img src="images/kucinganjing.png" alt="Contact Us" style="width: 100%; border-radius: 20px; box-shadow: 0 4px 20px rgba(224, 122, 95, 0.1);">
+            <img src="{{ asset('images/kucinganjing.png') }}" alt="Contact Us" style="width: 100%; border-radius: 20px; box-shadow: 0 4px 20px rgba(224, 122, 95, 0.1);">
         </div>
 
         <!-- Form -->

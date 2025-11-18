@@ -105,29 +105,108 @@ td {
     position: relative;
     font-size: 16px;
     background: white;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
 }
 
-td:hover {
-    background-color: rgba(244, 123, 96, 0.2);
+td:not(.full-book):hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(244, 123, 96, 0.2);
 }
 
 td.selected {
-    background-color: #f47b60;
+    background-color: #f47b60 !important;
     color: white;
     font-weight: bold;
+    border: 2px solid #d23c5a !important;
+}
+
+td.selected::after {
+    display: none;
+}
+
+/* Tooltip for slot availability */
+td[data-slots]::before {
+    content: attr(data-slots);
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 10;
+}
+
+td[data-slots]:hover::before {
+    opacity: 1;
+}
+
+/* Availability indicators */
+td.availability-high {
+    background: linear-gradient(135deg, #d4f4dd 0%, #e8f9ed 100%);
+    border: 2px solid #4caf50;
+}
+
+td.availability-high::after {
+    content: "✓";
+    position: absolute;
+    bottom: 3px;
+    right: 6px;
+    font-size: 16px;
+    color: #4caf50;
+    font-weight: bold;
+}
+
+td.availability-medium {
+    background: linear-gradient(135deg, #fff8e1 0%, #fffbf0 100%);
+    border: 2px solid #ffa726;
+}
+
+td.availability-medium::after {
+    content: "◐";
+    position: absolute;
+    bottom: 3px;
+    right: 6px;
+    font-size: 16px;
+    color: #ffa726;
+}
+
+td.availability-low {
+    background: linear-gradient(135deg, #ffe5e5 0%, #fff0f0 100%);
+    border: 2px solid #ff6b6b;
+}
+
+td.availability-low::after {
+    content: "⚠";
+    position: absolute;
+    bottom: 3px;
+    right: 6px;
+    font-size: 14px;
+    color: #ff6b6b;
 }
 
 td.full-book {
     cursor: not-allowed;
-    color: #aaa;
+    background: linear-gradient(135deg, #e0e0e0 0%, #f0f0f0 100%);
+    border: 2px solid #999;
+    color: #999;
 }
 
 td.full-book::after {
-    content: "🐾";
+    content: "✕";
     position: absolute;
-    bottom: 5px;
-    right: 5px;
-    font-size: 18px; /* icon lebih besar */
+    bottom: 3px;
+    right: 6px;
+    font-size: 18px;
+    color: #999;
+    font-weight: bold;
 }
 
         .booking-tutorial {
@@ -304,12 +383,43 @@ td.full-book::after {
     <div class="booking-tutorial">
         <h3>How to Book Your Paw-some Day 🐾</h3>
         <ol>
-            <li>Pilih tanggal pada kalender yang tersedia.</li>
-            <li>Pastikan tanggal yang dipilih tidak memiliki tanda 🐾 (sudah penuh).</li>
-            <li>Klik dan seret jika ingin memilih lebih dari 1 hari.</li>
-            <li>Lepaskan klik untuk membuka form pemesanan.</li>
-            <li>Isi data sesuai kebutuhan lalu klik <b>Submit Booking</b>.</li>
+            <li>Select a date in the calendar.</li>
+            <li>Check the availability indicator on each date.</li>
+            <li>Click and drag if you want to select more than one day.</li>
+            <li>Release the mouse to open the booking form.</li>
+            <li>Fill in the details and click <b>Submit Booking</b>.</li>
         </ol>
+        
+        <!-- Availability Legend -->
+        <div style="margin-top: 24px; padding: 16px; background: #f8fafb; border-radius: 12px; border: 1px solid rgba(232, 180, 160, 0.2);">
+            <h4 style="margin: 0 0 12px 0; font-size: 14px; color: #5a3b2e; font-weight: 600;">📊 Availability Guide</h4>
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="display: inline-block; width: 24px; height: 24px; background: linear-gradient(135deg, #d4f4dd, #e8f9ed); border: 2px solid #4caf50; border-radius: 4px; position: relative;">
+                        <span style="position: absolute; bottom: 0; right: 2px; font-size: 12px; color: #4caf50;">✓</span>
+                    </span>
+                    <span style="color: #5a3b2e;"><b>Many slots</b> (0-49% booked)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="display: inline-block; width: 24px; height: 24px; background: linear-gradient(135deg, #fff8e1, #fffbf0); border: 2px solid #ffa726; border-radius: 4px; position: relative;">
+                        <span style="position: absolute; bottom: 0; right: 2px; font-size: 12px; color: #ffa726;">◐</span>
+                    </span>
+                    <span style="color: #5a3b2e;"><b>Some slots</b> (50-74% booked)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="display: inline-block; width: 24px; height: 24px; background: linear-gradient(135deg, #ffe5e5, #fff0f0); border: 2px solid #ff6b6b; border-radius: 4px; position: relative;">
+                        <span style="position: absolute; bottom: 0; right: 2px; font-size: 11px; color: #ff6b6b;">⚠</span>
+                    </span>
+                    <span style="color: #5a3b2e;"><b>Few slots</b> (75-99% booked)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="display: inline-block; width: 24px; height: 24px; background: linear-gradient(135deg, #e0e0e0, #f0f0f0); border: 2px solid #999; border-radius: 4px; position: relative;">
+                        <span style="position: absolute; bottom: 0; right: 2px; font-size: 14px; color: #999;">✕</span>
+                    </span>
+                    <span style="color: #999;"><b>Fully booked</b> (100%)</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -317,7 +427,7 @@ td.full-book::after {
 <div class="modal" id="booking-modal">
     <div class="modal-content">
         <h2>Book Your Appointment Now!</h2>
-        <a href="{{ route('booking') }}" style=" border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; text-decoration: none; display: inline-block;">Book</a>
+        <a href="#" id="bookingLink" style=" border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; text-decoration: none; display: inline-block;">Book</a>
     </div>
 </div>
 
@@ -325,18 +435,38 @@ td.full-book::after {
     const calendarBody = document.getElementById('calendar-body');
 const monthYearLabel = document.querySelector('.calendar-header span');
 
-let currentMonth = 6; // Juli (0 = Januari)
-let currentYear = 2025;
+let currentMonth = new Date().getMonth(); // Current month
+let currentYear = new Date().getFullYear(); // Current year
 let selecting = false;
 let selectedDays = [];
+let fullBookedDates = [];
+let availabilityLevels = {};
+let bookingCounts = {};
+let maxCapacity = 20;
 
-// Contoh data full booked (format: "YYYY-MM-DD")
-const fullBookedDates = [
-    "2025-07-10", "2025-07-14", "2025-07-16", "2025-07-30",
-    "2025-08-02", "2025-08-05", "2025-08-22", "2025-08-27"
-];
+// Fetch calendar data from API
+async function fetchCalendarData(month, year) {
+    try {
+        const response = await fetch(`/calendar/data?month=${month + 1}&year=${year}`);
+        const data = await response.json();
+        
+        if (data.success) {
+            fullBookedDates = data.full_dates;
+            availabilityLevels = data.availability_levels || {};
+            bookingCounts = data.booking_counts || {};
+            maxCapacity = data.max_capacity || 20;
+            return data;
+        }
+    } catch (error) {
+        console.error('Failed to fetch calendar data:', error);
+    }
+    return { full_dates: [] };
+}
 
-function generateCalendar(month, year) {
+async function generateCalendar(month, year) {
+    // Fetch data from backend
+    await fetchCalendarData(month, year);
+    
     calendarBody.innerHTML = "";
 
     const firstDay = new Date(year, month, 1).getDay(); // 0 = Minggu
@@ -357,9 +487,29 @@ function generateCalendar(month, year) {
                 cell.innerHTML = day;
 
                 let dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                
+                // Calculate available slots
+                const booked = bookingCounts[dateString] || 0;
+                const available = maxCapacity - booked;
+                
+                // Add tooltip with slot info
+                if (booked > 0) {
+                    cell.setAttribute('data-slots', `${available} slots available (${booked}/${maxCapacity} booked)`);
+                } else {
+                    cell.setAttribute('data-slots', `${available} slots available`);
+                }
+                
+                // Add availability class
                 if (fullBookedDates.includes(dateString)) {
                     cell.classList.add('full-book');
+                    cell.setAttribute('data-slots', 'Fully booked');
                 } else {
+                    // Add availability level indicator
+                    const availLevel = availabilityLevels[dateString];
+                    if (availLevel) {
+                        cell.classList.add(`availability-${availLevel}`);
+                    }
+                    
                     cell.addEventListener('mousedown', () => {
                         selecting = true;
                         selectedDays = [];
@@ -371,6 +521,21 @@ function generateCalendar(month, year) {
                     cell.addEventListener('mouseup', () => {
                         selecting = false;
                         if (selectedDays.length) {
+                            // Sort selected days
+                            selectedDays.sort((a, b) => a - b);
+                            
+                            // Format dates for booking
+                            const startDay = selectedDays[0];
+                            const startDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(startDay).padStart(2, '0')}`;
+                            
+                            // Calculate duration (number of days selected)
+                            const duration = selectedDays.length;
+                            
+                            // Update booking link with date and duration parameters
+                            const bookingLink = document.getElementById('bookingLink');
+                            bookingLink.href = `{{ route('booking') }}?date=${startDate}&duration=${duration}`;
+                            
+                            // Show modal
                             document.getElementById('booking-modal').style.display = 'flex';
                         }
                     });
@@ -455,7 +620,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Terjadi kesalahan. Silakan coba lagi.');
+            alert('An error occurred. Please try again.');
             bookNowBtn.disabled = false;
             bookNowBtn.textContent = 'Book';
         });

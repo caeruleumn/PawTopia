@@ -458,7 +458,7 @@ function bindActions(container, items){
       const item = items.find(x=>x.id===id);
       const action = e.currentTarget.getAttribute('data-action');
       if(action==='delete'){
-        if(!confirm('Hapus produk ini?')) return;
+        if(!confirm('Delete this product?')) return;
         const fd = new FormData(); fd.append('_method','DELETE');
         await apiFetch(`{{ url('/admin/products') }}/${id}`, {method:'POST', body: fd});
         await loadVitamins();
@@ -551,9 +551,9 @@ document.addEventListener("DOMContentLoaded", () => {
         editModal.style.display = "flex";
         document.body.style.overflow = "hidden";
         const inputs = editModal.querySelectorAll("input");
-        inputs[1].value = name;   // nama produk
-        inputs[2].value = price;  // harga
-        inputs[3].value = stock;  // stok
+        inputs[1].value = name;   // product name
+        inputs[2].value = price;  // price
+        inputs[3].value = stock;  // stock
         editModal.querySelectorAll(".category-btns button").forEach(btn => {
             btn.classList.remove("active");
             if (btn.textContent.trim() === category) {

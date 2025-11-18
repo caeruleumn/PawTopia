@@ -11,11 +11,18 @@ class Booking extends Model
 
     protected $fillable = [
         'member_id',
+        'pet_id',
         'service_type',
         'pet_name',
         'pet_type',
         'booking_date',
+        'duration_days',
         'booking_time',
+        'drop_off_type',
+        'pick_up_type',
+        'distance_km',
+        'base_price',
+        'delivery_fee',
         'notes',
         'status',
         'total_price'
@@ -23,8 +30,11 @@ class Booking extends Model
 
     protected $casts = [
         'booking_date' => 'date',
-        // time column stored as string (no native time cast in Eloquent)
         'booking_time' => 'string',
+        'duration_days' => 'integer',
+        'distance_km' => 'decimal:2',
+        'base_price' => 'decimal:2',
+        'delivery_fee' => 'decimal:2',
         'total_price' => 'decimal:2'
     ];
 
@@ -32,6 +42,34 @@ class Booking extends Model
     public function member()
     {
         return $this->belongsTo(Member::class);
+    }
+
+    // Relationship dengan Pet
+    public function pet()
+    {
+        return $this->belongsTo(Pet::class);
+    }
+
+    // Relationship dengan Testimonial
+    public function testimonial()
+    {
+        return $this->hasOne(Testimonial::class);
+    }
+
+    // Relationship dengan Transaction (polymorphic)
+    public function transaction()
+    {
+        return $this->morphOne(Transaction::class, 'transactable');
+    }
+
+    /**
+     * Calculate total price based on duration and delivery
+     */
+    public function calculateTotalPrice()
+    {
+        $total = $this->base_price * $this->duration_days;
+        $total += $this->delivery_fee;
+        return $total;
     }
 
     // Scope untuk status booking

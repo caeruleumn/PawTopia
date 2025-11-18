@@ -18,7 +18,6 @@
 
         <!-- PROFILE INFO -->
         <div class="profile-info">
-            <img src="{{ asset('images/user.jpg') }}" alt="Profile">
             <div class="profile-details">
                 <span class="profile-name">{{ Auth::user()->name ?? 'Admin' }}</span>
                 <span class="profile-email">{{ Auth::user()->email ?? 'admin@example.com' }}</span>

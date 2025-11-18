@@ -466,7 +466,7 @@ body {
         @foreach($catFood as $p)
         @php
             $statusClass = $p->status === 'active' ? 'available' : $p->status;
-            $statusText = $statusClass === 'available' ? 'Tersedia' : ($statusClass === 'coming-soon' ? 'Coming Soon' : 'Pre-order');
+            $statusText = $statusClass === 'available' ? 'Available' : ($statusClass === 'coming-soon' ? 'Coming Soon' : 'Pre-order');
             $img = $p->image_path ? asset($p->image_path) : asset('images/1.svg');
         @endphp
         <div class="product-card"
@@ -543,7 +543,7 @@ body {
         @foreach($catSupplies as $p)
         @php
             $statusClass = $p->status === 'active' ? 'available' : $p->status;
-            $statusText = $statusClass === 'available' ? 'Tersedia' : ($statusClass === 'coming-soon' ? 'Coming Soon' : 'Pre-order');
+            $statusText = $statusClass === 'available' ? 'Available' : ($statusClass === 'coming-soon' ? 'Coming Soon' : 'Pre-order');
             $img = $p->image_path ? asset($p->image_path) : asset('images/1.svg');
         @endphp
         <div class="product-card"
@@ -571,7 +571,7 @@ body {
         @foreach($dogSupplies as $p)
         @php
             $statusClass = $p->status === 'active' ? 'available' : $p->status;
-            $statusText = $statusClass === 'available' ? 'Tersedia' : ($statusClass === 'coming-soon' ? 'Coming Soon' : 'Pre-order');
+            $statusText = $statusClass === 'available' ? 'Available' : ($statusClass === 'coming-soon' ? 'Coming Soon' : 'Pre-order');
             $img = $p->image_path ? asset($p->image_path) : asset('images/1.svg');
         @endphp
         <div class="product-card"
@@ -648,7 +648,7 @@ body {
         @foreach($dogVitamins as $p)
         @php
             $statusClass = $p->status === 'active' ? 'available' : $p->status;
-            $statusText = $statusClass === 'available' ? 'Tersedia' : ($statusClass === 'coming-soon' ? 'Coming Soon' : 'Pre-order');
+            $statusText = $statusClass === 'available' ? 'Available' : ($statusClass === 'coming-soon' ? 'Coming Soon' : 'Pre-order');
             $img = $p->image_path ? asset($p->image_path) : asset('images/1.svg');
         @endphp
         <div class="product-card"
@@ -733,13 +733,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const allProductCards = document.querySelectorAll('.product-card');
         allProductCards.forEach(card => {
             const name = card.getAttribute('data-name') || '';
-            const description = card.getAttribute('data-description') || '';
-            const sku = card.getAttribute('data-sku') || '';
 
-            // Prioritas pencarian berdasarkan nama produk terlebih dahulu
-            if (name.includes(searchTerm) ||
-                description.includes(searchTerm) ||
-                sku.includes(searchTerm)) {
+            // Pencarian hanya berdasarkan nama produk
+            if (name.includes(searchTerm)) {
 
                 // Show the product card
                 card.classList.remove('hidden');

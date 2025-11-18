@@ -37,8 +37,8 @@
             </a>
         </li>
         <li>
-            <a href="{{ url('/history') }}" style="text-decoration: none; font-weight: {{ Request::is('history') ? '700' : '500' }}; 
-                      color: {{ Request::is('history') ? $activeColor : $inactiveColor }};">
+            <a href="{{ url('/payment/history') }}" style="text-decoration: none; font-weight: {{ Request::is('payment/history') ? '700' : '500' }}; 
+                      color: {{ Request::is('payment/history') ? $activeColor : $inactiveColor }};">
                 History
             </a>
         </li>

@@ -435,7 +435,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="5" style="text-align:center;color:#888;">Belum ada produk Pet Food.</td></tr>
+                        <tr><td colspan="5" style="text-align:center;color:#888;">No Pet Food products yet.</td></tr>
                     @endforelse
                 @endisset
             </tbody>
@@ -555,26 +555,26 @@ function bindActions(container, items) {
       const id = Number(tr.getAttribute('data-id'));
       const action = e.currentTarget.getAttribute('data-action');
       if (action === 'delete') {
-        if (!confirm('Hapus produk ini?')) return;
+        if (!confirm('Delete this product?')) return;
         try {
           const fd = new FormData();
           fd.append('_method', 'DELETE');
           await apiFetch(`{{ url('/admin/products') }}/${id}`, { method: 'POST', body: fd });
           // Refresh daftar agar konsisten
           await loadPetFood();
-          alert('Produk berhasil dihapus!');
+          alert('Product deleted successfully!');
         } catch (e) {
-          console.error('Gagal menghapus produk:', e);
-          alert('Gagal menghapus produk: ' + (e.message || e));
+          console.error('Failed to delete product:', e);
+          alert('Failed to delete product: ' + (e.message || e));
         }
       } else if (action === 'edit') {
-        // Buka modal edit dan preload data dari API
+        // Open edit modal and preload data from API
         try {
           const p = await apiFetch(`{{ url('/admin/products') }}/${id}`);
           openEditProductModal(p);
         } catch (e) {
-          console.error('Gagal memuat produk:', e);
-          alert('Gagal memuat detail produk');
+          console.error('Failed to load product:', e);
+          alert('Failed to load product details');
         }
       }
     });
@@ -606,7 +606,7 @@ function setupModalListeners() {
     document.getElementById('editProductPrice').value = `Rp. ${intToRupiah(Number(p.price)||0)}`;
     document.getElementById('editProductStock').value = p.stock ?? 0;
     document.getElementById('editProductStatus').value = p.status || 'available';
-    // Set kategori aktif
+    // Set active category
     const cat = (p.category || '').trim();
     editModal.querySelectorAll('#editCategoryBtns button').forEach(btn => {
       btn.classList.toggle('active', btn.textContent.trim() === cat);

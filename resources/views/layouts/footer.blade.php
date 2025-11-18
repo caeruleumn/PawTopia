@@ -145,7 +145,7 @@
   <footer class="footer">
     <div class="footerLogo">
       <div class="footerLogoBox">
-        <img src="images/logo.svg" alt="Pawtopia Logo" class="footerLogoImg">
+        <img src="{{ asset('images/logo.svg') }}" alt="Pawtopia Logo" class="footerLogoImg">
       </div>
     </div>
 
@@ -154,20 +154,25 @@
       <p class="footerInfoText">Mon – Fri: <strong>08:00 – 18:00</strong></p>
       <p class="footerInfoText">Sat – Sun: <strong>09:00 – 16:00</strong></p>
       <div class="footerSocials">
-        <a href="#"><img src="images/ig.svg" alt="Instagram" class="footerSocialIcon"></a>
-        <a href="#"><img src="images/x.svg" alt="X" class="footerSocialIcon"></a>
-        <a href="#"><img src="images/yt.svg" alt="YouTube" class="footerSocialIcon"></a>
-        <a href="#"><img src="images/tiktok.svg" alt="TikTok" class="footerSocialIcon"></a>
+        <a href="#"><img src="{{ asset('images/ig.svg') }}" alt="Instagram" class="footerSocialIcon"></a>
+        <a href="#"><img src="{{ asset('images/x.svg') }}" alt="X" class="footerSocialIcon"></a>
+        <a href="#"><img src="{{ asset('images/yt.svg') }}" alt="YouTube" class="footerSocialIcon"></a>
+        <a href="#"><img src="{{ asset('images/tiktok.svg') }}" alt="TikTok" class="footerSocialIcon"></a>
       </div>
     </div>
 
     <nav class="footerNav">
-    <a href="{{ route('home') }}" class="footerNavLink">Home</a>
-    <a href="{{ route('calendar') }}" class="footerNavLink">Booking</a>
-      <button class="footerCta" id="rateUsBtn">Rate us</button>
+      <a href="{{ route('home') }}" class="footerNavLink">Home</a>
+      <a href="{{ route('calendar') }}" class="footerNavLink">Booking</a>
+      <a href="{{ route('contact') }}" class="footerNavLink">Contact</a>
+      @auth('member')
+        <a href="{{ route('history') }}" class="footerNavLink">My Bookings</a>
+      @else
+        <a href="{{ route('register.page') }}" class="footerNavLink">Login / Register</a>
+      @endauth
     </nav>
 
-    <img src="images/footer.svg" alt="Footer Decoration" class="footerDecorationImg">
+    <img src="{{ asset('images/footer.svg') }}" alt="Footer Decoration" class="footerDecorationImg">
 
     <div class="footerCopyright">
       &copy; 2025 Pawtopia. All paws reserved 🐾 | Designed with love &amp; treats.
@@ -252,19 +257,18 @@
       <span class="close-btn" id="closeThankYou">&times;</span>
       <h2>Thank you for your feedback!</h2>
       <p>Your thoughts help us create a better experience for you and your furry companions. 💖</p>
-      <img src="images/footer.gif" alt="Thank You" style="width: 250px; height: 250px; margin-top: 50px;">
+      <img src="{{ asset('images/footer.gif') }}" alt="Thank You" style="width: 250px; height: 250px; margin-top: 50px;">
     </div>
   </div>
 
   <script>
-    const rateUsBtn = document.getElementById("rateUsBtn");
     const modal = document.getElementById("feedbackModal");
     const closeBtn = modal.querySelector(".close-btn");
     const submitBtn = document.getElementById("submitFeedbackBtn");
     const thankYouModal = document.getElementById("thankYouModal");
     const closeThankYou = document.getElementById("closeThankYou");
 
-    rateUsBtn.addEventListener("click", () => { modal.style.display = "block"; });
+    // Modal can be opened programmatically if needed
     closeBtn.addEventListener("click", () => { modal.style.display = "none"; });
     window.addEventListener("click", (e) => {
       if (e.target === modal) modal.style.display = "none";

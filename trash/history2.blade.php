@@ -84,13 +84,11 @@
   <div class="page-wrapper" style="padding: 30px;">
   <div class="container">
     <div class="title">
-      <img src="{{ asset('images/Time Machine.svg') }}" alt="icon">
       Booking History
     </div>
 
     <div class="empty-state">
-      <!-- Ganti dengan file SVG/PNG kamu -->
-      <img src="{{ asset('images/reminder.png') }}" alt="empty icon">
+      <!-- Removed missing reminder icon -->
       <h2>Oops, no bookings yet!</h2>
       <p>Plan your first paw-some experience today.</p>
       @auth('member')
