@@ -328,6 +328,7 @@ td.full-book::after {
         border-radius: 10px;
         text-align: center;
         max-width: 300px;
+        position: relative;
     }
     .modal-content h2 {
         font-size: 16px;
@@ -340,6 +341,22 @@ td.full-book::after {
         padding: 8px 20px;
         border-radius: 20px;
         cursor: pointer;
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        background: transparent;
+        border: none;
+        font-size: 20px;
+        line-height: 1;
+        cursor: pointer;
+        color: #999;
+    }
+
+    .modal-close:hover {
+        color: #555;
     }
 
     /* Responsive */
@@ -376,22 +393,7 @@ td.full-book::after {
                 </thead>
                 <tbody id="calendar-body"></tbody>
             </table>
-        </div>
-    </div>
-
-    <!-- Booking Tutorial -->
-    <div class="booking-tutorial">
-        <h3>How to Book Your Paw-some Day 🐾</h3>
-        <ol>
-            <li>Select a date in the calendar.</li>
-            <li>Check the availability indicator on each date.</li>
-            <li>Click and drag if you want to select more than one day.</li>
-            <li>Release the mouse to open the booking form.</li>
-            <li>Fill in the details and click <b>Submit Booking</b>.</li>
-        </ol>
-        
-        <!-- Availability Legend -->
-        <div style="margin-top: 24px; padding: 16px; background: #f8fafb; border-radius: 12px; border: 1px solid rgba(232, 180, 160, 0.2);">
+                   <div style="margin-top: 24px; padding: 16px; background: #f8fafb; border-radius: 12px; border: 1px solid rgba(232, 180, 160, 0.2);">
             <h4 style="margin: 0 0 12px 0; font-size: 14px; color: #5a3b2e; font-weight: 600;">📊 Availability Guide</h4>
             <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
                 <div style="display: flex; align-items: center; gap: 10px;">
@@ -421,11 +423,26 @@ td.full-book::after {
             </div>
         </div>
     </div>
+        </div>
+ 
+
+    <!-- Booking Tutorial -->
+    <div class="booking-tutorial">
+        <h3>How to Book Your Paw-some Day 🐾</h3>
+        <ol>
+            <li>Select a date in the calendar.</li>
+            <li>Check the availability indicator on each date.</li>
+            <li>Click and drag if you want to select more than one day.</li>
+            <li>Release the mouse to open the booking form.</li>
+            <li>Fill in the details and click <b>Submit Booking</b>.</li>
+        </ol>
+    </div>
 </div>
 
 <!-- Modal -->
 <div class="modal" id="booking-modal">
     <div class="modal-content">
+        <button type="button" class="modal-close" onclick="closeModal()">&times;</button>
         <h2>Book Your Appointment Now!</h2>
         <a href="#" id="bookingLink" style=" border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; text-decoration: none; display: inline-block;">Book</a>
     </div>

@@ -162,9 +162,18 @@
         <!-- Form -->
         <div class="contact-form">
             <h2>Send Us a Message</h2>
-            <form action="#" method="POST">
-                <input type="text" name="name" placeholder="Your Name" required>
+            <form action="{{ route('feedback.store') }}" method="POST">
+                @csrf
+                <input type="text" name="user_name" placeholder="Your Name" required>
                 <input type="email" name="email" placeholder="Your Email" required>
+                <select name="rating" required style="width: 100%; padding: 12px 15px; border: 2px solid #f5d1b2; border-radius: 12px; font-family: 'Poppins', sans-serif; font-size: 15px; margin-bottom: 15px;">
+                    <option value="" disabled selected>How was your experience? (1-5)</option>
+                    <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
+                    <option value="4">⭐⭐⭐⭐ - Good</option>
+                    <option value="3">⭐⭐⭐ - Okay</option>
+                    <option value="2">⭐⭐ - Poor</option>
+                    <option value="1">⭐ - Very Bad</option>
+                </select>
                 <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
                 <button type="submit">Send Message</button>
             </form>

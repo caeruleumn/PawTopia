@@ -579,6 +579,9 @@
             <button class="btn-later" onclick="payLater()">
                 Pay Later - View My Bookings
             </button>
+            <button type="button" class="btn-later" onclick="closeModal()">
+                Close
+            </button>
         </div>
 
         <p style="font-size: 13px; color: #999; margin-top: 20px; text-align: center;">
