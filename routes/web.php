@@ -90,7 +90,7 @@ Route::get('/profile', [UserController::class, 'profile'])
     ->name('profile');
 Route::get('/check-auth', function() {
     return response()->json([
-        'authenticated' => auth()->check()
+        'authenticated' => Auth::guard('member')->check()
     ]);
 })->name('check.auth');
 

@@ -38,7 +38,7 @@
 .calendar-wrapper {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 40px;
     margin: 0 auto 60px;
     flex-wrap: wrap;
@@ -215,11 +215,14 @@ td.full-book::after {
             flex: 1;
             background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%);
             border-radius: 20px;
-            padding: 28px;
+            padding: 20px 24px 28px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.06);
             border: 1px solid rgba(232, 180, 160, 0.15);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
         }
 
         .booking-tutorial::before {
@@ -328,6 +331,7 @@ td.full-book::after {
         border-radius: 10px;
         text-align: center;
         max-width: 300px;
+        position: relative;
     }
     .modal-content h2 {
         font-size: 16px;
@@ -340,6 +344,17 @@ td.full-book::after {
         padding: 8px 20px;
         border-radius: 20px;
         cursor: pointer;
+    }
+
+    .modal-close-btn {
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        font-size: 18px;
+        color: #888;
+        cursor: pointer;
+        border: none;
+        background: transparent;
     }
 
     /* Responsive */
@@ -377,6 +392,39 @@ td.full-book::after {
                 <tbody id="calendar-body"></tbody>
             </table>
         </div>
+
+        <!-- Availability Guide moved under calendar -->
+        <div style="margin-top: 16px; padding: 16px; background: #f8fafb; border-radius: 12px; border: 1px solid rgba(232, 180, 160, 0.2); max-width: 500px;">
+            <h4 style="margin: 0 0 12px 0; font-size: 14px; color: #5a3b2e; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                <span style="font-size:16px;">📊</span> Availability Guide
+            </h4>
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="display: inline-block; width: 24px; height: 24px; background: linear-gradient(135deg, #d4f4dd, #e8f9ed); border: 2px solid #4caf50; border-radius: 4px; position: relative;">
+                        <span style="position: absolute; bottom: 0; right: 2px; font-size: 12px; color: #4caf50;">✓</span>
+                    </span>
+                    <span style="color: #5a3b2e;"><b>Many slots</b> (0–49% booked)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="display: inline-block; width: 24px; height: 24px; background: linear-gradient(135deg, #fff8e1, #fffbf0); border: 2px solid #ffa726; border-radius: 4px; position: relative;">
+                        <span style="position: absolute; bottom: 0; right: 2px; font-size: 12px; color: #ffa726;">◐</span>
+                    </span>
+                    <span style="color: #5a3b2e;"><b>Some slots</b> (50–74% booked)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="display: inline-block; width: 24px; height: 24px; background: linear-gradient(135deg, #ffe5e5, #fff0f0); border: 2px solid #ff6b6b; border-radius: 4px; position: relative;">
+                        <span style="position: absolute; bottom: 0; right: 2px; font-size: 11px; color: #ff6b6b;">⚠</span>
+                    </span>
+                    <span style="color: #5a3b2e;"><b>Few slots</b> (75–99% booked)</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="display: inline-block; width: 24px; height: 24px; background: linear-gradient(135deg, #e0e0e0, #f0f0f0); border: 2px solid #999; border-radius: 4px; position: relative;">
+                        <span style="position: absolute; bottom: 0; right: 2px; font-size: 14px; color: #999;">✕</span>
+                    </span>
+                    <span style="color: #999;"><b>Fully booked</b> (100%)</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Booking Tutorial -->
@@ -389,43 +437,13 @@ td.full-book::after {
             <li>Release the mouse to open the booking form.</li>
             <li>Fill in the details and click <b>Submit Booking</b>.</li>
         </ol>
-        
-        <!-- Availability Legend -->
-        <div style="margin-top: 24px; padding: 16px; background: #f8fafb; border-radius: 12px; border: 1px solid rgba(232, 180, 160, 0.2);">
-            <h4 style="margin: 0 0 12px 0; font-size: 14px; color: #5a3b2e; font-weight: 600;">📊 Availability Guide</h4>
-            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="display: inline-block; width: 24px; height: 24px; background: linear-gradient(135deg, #d4f4dd, #e8f9ed); border: 2px solid #4caf50; border-radius: 4px; position: relative;">
-                        <span style="position: absolute; bottom: 0; right: 2px; font-size: 12px; color: #4caf50;">✓</span>
-                    </span>
-                    <span style="color: #5a3b2e;"><b>Many slots</b> (0-49% booked)</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="display: inline-block; width: 24px; height: 24px; background: linear-gradient(135deg, #fff8e1, #fffbf0); border: 2px solid #ffa726; border-radius: 4px; position: relative;">
-                        <span style="position: absolute; bottom: 0; right: 2px; font-size: 12px; color: #ffa726;">◐</span>
-                    </span>
-                    <span style="color: #5a3b2e;"><b>Some slots</b> (50-74% booked)</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="display: inline-block; width: 24px; height: 24px; background: linear-gradient(135deg, #ffe5e5, #fff0f0); border: 2px solid #ff6b6b; border-radius: 4px; position: relative;">
-                        <span style="position: absolute; bottom: 0; right: 2px; font-size: 11px; color: #ff6b6b;">⚠</span>
-                    </span>
-                    <span style="color: #5a3b2e;"><b>Few slots</b> (75-99% booked)</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="display: inline-block; width: 24px; height: 24px; background: linear-gradient(135deg, #e0e0e0, #f0f0f0); border: 2px solid #999; border-radius: 4px; position: relative;">
-                        <span style="position: absolute; bottom: 0; right: 2px; font-size: 14px; color: #999;">✕</span>
-                    </span>
-                    <span style="color: #999;"><b>Fully booked</b> (100%)</span>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
 <!-- Modal -->
 <div class="modal" id="booking-modal">
     <div class="modal-content">
+        <button type="button" class="modal-close-btn" onclick="closeModal()">&times;</button>
         <h2>Book Your Appointment Now!</h2>
         <a href="#" id="bookingLink" style=" border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; text-decoration: none; display: inline-block;">Book</a>
     </div>
@@ -594,14 +612,15 @@ generateCalendar(currentMonth, currentYear);
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const bookNowBtn = document.getElementById('bookNowBtn');
-    
-    bookNowBtn.addEventListener('click', function() {
-        // Show loading state
-        bookNowBtn.disabled = true;
-        bookNowBtn.textContent = 'Checking...';
-        
-        // Check authentication status
+    const bookingLink = document.getElementById('bookingLink');
+
+    if (!bookingLink) return;
+
+    bookingLink.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        const originalHref = bookingLink.getAttribute('href') || '';
+
         fetch('{{ route("check.auth") }}', {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -611,18 +630,20 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.authenticated) {
-                // If logged in, go to booking page
-                window.location.href = '{{ route("booking") }}';
+                // Sudah login: lanjut ke URL booking (sudah berisi date & duration)
+                if (originalHref && originalHref !== '#') {
+                    window.location.href = originalHref;
+                } else {
+                    window.location.href = '{{ route("booking") }}';
+                }
             } else {
-                // If not logged in, go to login page
+                // Belum login: arahkan ke halaman login/registrasi member
                 window.location.href = '{{ route("register") }}';
             }
         })
         .catch(error => {
             console.error('Error:', error);
             alert('An error occurred. Please try again.');
-            bookNowBtn.disabled = false;
-            bookNowBtn.textContent = 'Book';
         });
     });
 });

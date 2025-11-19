@@ -107,7 +107,16 @@
                                     <span class="row-number">{{ ($feedbacks->currentPage() - 1) * $feedbacks->perPage() + $loop->iteration }}</span>
                                 </td>
                                 <td class="testimonial-text">
-                                    {{ $feedback->message }}
+                                    <div class="customer-name">{{ $feedback->user_name ?? '-' }}</div>
+                                    <div class="customer-email">{{ $feedback->email ?? '-' }}</div>
+                                    <div class="customer-message">
+                                        {{ \Illuminate\Support\Str::limit($feedback->message, 80) }}
+                                        @if(strlen($feedback->message) > 80)
+                                            <button type="button" class="see-more-btn" onclick="showMessageModal(`{{ addslashes($feedback->user_name) }}`, `{{ addslashes($feedback->email) }}`, `{{ addslashes($feedback->message) }}`, `{{ $feedback->created_at->format('d/m/Y') }}`, {{ $feedback->rating }})">
+                                                Lihat selengkapnya
+                                            </button>
+                                        @endif
+                                    </div>
                                 </td>
                                 <td class="text-center">
                                     <div class="testimonial-date">{{ $feedback->created_at->format('d/m/Y') }}</div>
@@ -193,6 +202,31 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Full Message Modal -->
+<div class="modal fade" id="viewMessageModal" tabindex="-1" aria-labelledby="viewMessageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewMessageModalLabel">Feedback Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-2"><strong>Name:</strong> <span id="viewMessageName">-</span></div>
+                <div class="mb-2"><strong>Email:</strong> <span id="viewMessageEmail">-</span></div>
+                <div class="mb-2"><strong>Date:</strong> <span id="viewMessageDate">-</span></div>
+                <div class="mb-3"><strong>Rating:</strong> <span id="viewMessageRating">-</span>/5</div>
+                <div>
+                    <strong>Message:</strong>
+                    <p id="viewMessageText" style="white-space: pre-wrap; margin-top: 8px;"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -907,11 +941,35 @@
     color: #2C3E50;
 }
 
+.customer-email {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 6px;
+}
+
 /* Testimonial Text */
 .testimonial-text {
     line-height: 1.5;
     color: #555;
     max-width: 400px;
+}
+
+.see-more-btn {
+    margin-top: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 999px;
+    border: none;
+    background: #FFE0B5;
+    color: #C0392B;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.see-more-btn:hover {
+    background: #F8A07D;
+    color: #fff;
 }
 
 /* Date */
@@ -1412,11 +1470,16 @@ document.addEventListener('keydown', function(event) {
     let feedbackIdToDelete = null;
     let editFeedbackModal = null;
     let editForm = null;
+    let viewMessageModalInstance = null;
 
     // Initialize modals when DOM is loaded
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize modals
         editFeedbackModal = new bootstrap.Modal(document.getElementById('editFeedbackModal'));
+        const viewMessageModalEl = document.getElementById('viewMessageModal');
+        if (viewMessageModalEl) {
+            viewMessageModalInstance = new bootstrap.Modal(viewMessageModalEl);
+        }
         editForm = document.getElementById('editFeedbackForm');
         
         // Handle edit form submission
@@ -1470,6 +1533,18 @@ document.addEventListener('keydown', function(event) {
         document.getElementById('editRating').value = rating;
         document.getElementById('editMessage').value = message;
         editFeedbackModal.show();
+    }
+
+    function showMessageModal(name, email, message, date, rating) {
+        if (!viewMessageModalInstance) return;
+
+        document.getElementById('viewMessageName').textContent = name || '-';
+        document.getElementById('viewMessageEmail').textContent = email || '-';
+        document.getElementById('viewMessageDate').textContent = date || '-';
+        document.getElementById('viewMessageRating').textContent = rating ?? '-';
+        document.getElementById('viewMessageText').textContent = message || '';
+
+        viewMessageModalInstance.show();
     }
 
     document.getElementById('confirmDeleteBtn').addEventListener('click', function() {

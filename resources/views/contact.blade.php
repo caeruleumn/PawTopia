@@ -53,6 +53,9 @@
             box-shadow: 0 4px 20px rgba(224, 122, 95, 0.1);
             position: relative;
             overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .contact-info h2 {
             font-size: 26px;
@@ -62,7 +65,7 @@
             text-align: center;
         }
         .contact-info p {
-            margin: 10px 0;
+            margin: 6px 0;
             font-size: 16px;
             padding: 0 30px;
         }
@@ -72,9 +75,11 @@
         }
         .contact-info img {
             width: 0px;
-            margin-bottom: -10px; 
-            object-fit: contain;
+            margin-top: 8px;
+            margin-bottom: 0; 
+            object-fit: cover;
             transition: transform 0.3s;
+            align-self: stretch;
         }
 
         /* Contact form */
@@ -162,14 +167,65 @@
         <!-- Form -->
         <div class="contact-form">
             <h2>Send Us a Message</h2>
-            <form action="#" method="POST">
-                <input type="text" name="name" placeholder="Your Name" required>
+            <form id="contactForm" method="POST">
+                @csrf
+                <input type="text" name="user_name" placeholder="Your Name" required>
                 <input type="email" name="email" placeholder="Your Email" required>
+                <select name="rating" required style="width: 100%; padding: 12px 15px; border: 2px solid #f5d1b2; border-radius: 12px; font-family: 'Poppins', sans-serif; font-size: 15px; margin-bottom: 15px; background: #fff;">
+                    <option value="" disabled selected>How was your experience? (1-5)</option>
+                    <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
+                    <option value="4">⭐⭐⭐⭐ - Good</option>
+                    <option value="3">⭐⭐⭐ - Average</option>
+                    <option value="2">⭐⭐ - Poor</option>
+                    <option value="1">⭐ - Very Bad</option>
+                </select>
                 <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
                 <button type="submit">Send Message</button>
             </form>
         </div>
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('contactForm');
+            if (!form) return;
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+                const payload = {
+                    user_name: formData.get('user_name'),
+                    email: formData.get('email'),
+                    rating: parseInt(formData.get('rating'), 10),
+                    message: formData.get('message')
+                };
+
+                fetch("{{ route('feedback.store') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name=\"csrf-token\"]').getAttribute('content')
+                    },
+                    body: JSON.stringify(payload)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message || 'Thank you for your feedback!');
+                        form.reset();
+                    } else {
+                        alert(data.message || 'Failed to submit feedback. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Feedback error:', error);
+                    alert('An error occurred. Please try again later.');
+                });
+            });
+        });
+    </script>
 
     @include('layouts.footer')
 </body>
