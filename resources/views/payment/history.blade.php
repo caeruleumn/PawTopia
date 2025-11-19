@@ -257,23 +257,61 @@
                         </div>
 
                         <div class="transaction-status">
-                            <span class="status-badge 
-                                @if($transaction->transaction_status === 'settlement')
-                                    status-settlement
-                                @elseif($transaction->transaction_status === 'pending')
-                                    status-pending
-                                @else
-                                    status-failed
-                                @endif
-                            ">
-                                {{ strtoupper($transaction->transaction_status) }}
+                            @php
+                                $isBooking = $transaction->transactable_type === \App\Models\Booking::class;
+                                $booking = $isBooking ? $transaction->transactable : null;
+                                $bookingStatus = $booking ? $booking->status : null;
+                                $hasTestimonial = $booking && $booking->testimonial;
+
+                                $statusClass = 'status-failed';
+                                $statusLabel = strtoupper($transaction->transaction_status);
+
+                                if ($isBooking && $bookingStatus === 'cancelled') {
+                                    $statusClass = 'status-failed';
+                                    $statusLabel = 'CANCELLED';
+                                } elseif ($transaction->transaction_status === 'settlement') {
+                                    if ($isBooking && $bookingStatus) {
+                                        if ($bookingStatus === 'pending') {
+                                            $statusClass = 'status-pending';
+                                            $statusLabel = 'PENDING';
+                                        } else {
+                                            $statusClass = 'status-settlement';
+                                            $statusLabel = strtoupper(str_replace('-', ' ', $bookingStatus));
+                                        }
+                                    } else {
+                                        $statusClass = 'status-settlement';
+                                        $statusLabel = 'SETTLEMENT';
+                                    }
+                                } elseif ($transaction->transaction_status === 'pending') {
+                                    if ($isBooking && $bookingStatus && $bookingStatus !== 'pending') {
+                                        $statusClass = 'status-settlement';
+                                        $statusLabel = strtoupper(str_replace('-', ' ', $bookingStatus));
+                                    } else {
+                                        $statusClass = 'status-pending';
+                                        $statusLabel = 'PENDING';
+                                    }
+                                } else {
+                                    // cancel, deny, expire
+                                    $statusClass = 'status-failed';
+                                    $statusLabel = strtoupper($transaction->transaction_status);
+                                }
+                            @endphp
+
+                            <span class="status-badge {{ $statusClass }}">
+                                {{ $statusLabel }}
                             </span>
 
                             @if($transaction->transaction_status === 'settlement')
-                                @if($transaction->transactable_type === 'App\Models\Booking')
-                                    <a href="{{ route('booking.show', $transaction->transactable->id) }}" class="action-btn">
+                                @if($isBooking && $booking)
+                                    <a href="{{ route('booking.show', $booking->id) }}" class="action-btn">
                                         View Booking
                                     </a>
+
+                                    @if($bookingStatus === 'completed' && !$hasTestimonial)
+                                        <a href="{{ route('testimonials.create', ['booking_id' => $booking->id]) }}" class="action-btn" style="margin-top:8px; background-color:#f0ad4e;">
+                                            Write Testimonial
+                                        </a>
+                                    @endif
                                 @endif
                             @elseif($transaction->transaction_status === 'pending')
                                 <button class="action-btn" onclick="payNow('{{ $transaction->snap_token }}', '{{ $transaction->order_id }}')">

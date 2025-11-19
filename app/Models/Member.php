@@ -16,21 +16,17 @@ class Member extends Authenticatable
         'address',
         'role',
         'status',
+        'password',
     ];
 
     protected $hidden = [
+        'password',
         'remember_token',
     ];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    // ✅ Pakai phone sebagai "username" untuk login
-    public function getAuthIdentifierName()
-    {
-        return 'phone';
-    }
 
     // Relationship dengan Booking
     public function bookings()

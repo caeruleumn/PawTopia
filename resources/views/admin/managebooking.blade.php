@@ -1339,7 +1339,7 @@
                     <input type="number" name="price" min="0" step="1000" value="0" required />
                 </div>
                 <div class="form-actions">
-                    <button type="button" class="btn-cancel" onclick="closeAddBookingModal()">Cancel</button>
+                    <button type="button" class="btn-delete" onclick="closeAddBookingModal()">Cancel</button>
                     <button type="submit" id="addBookingSubmitBtn" class="btn-add">Save</button>
                 </div>
             </form>
@@ -1371,7 +1371,7 @@
                     </select>
                 </div>
                 <div class="form-actions">
-                    <button type="button" class="btn-cancel" onclick="closeStatusModal()">Cancel</button>
+                    <button type="button" class="btn-delete" onclick="closeStatusModal()">Cancel</button>
                     <button type="submit" class="btn-add">Update Status</button>
                 </div>
             </form>
@@ -2171,6 +2171,17 @@
 }
 
 /* (duplicate .btn-edit styles removed; use the main definition above) */
+
+.btn-status {
+    background: #4CAF50;
+    color: #fff;
+}
+
+.btn-status:hover {
+    background: #43A047;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
 
 .btn-status {
     background: #4CAF50;
@@ -3077,6 +3088,9 @@ document.addEventListener('keydown', function(event) {
                                 </button>
                                 <button class="action-btn btn-status" onclick="openStatusModal(${booking.id})">
                                     Update Status
+                                </button>
+                                <button class="action-btn btn-status" onclick="openStatusModal(${booking.id})">
+                                    <i class="bi bi-arrow-repeat"></i> Update Status
                                 </button>
                                 <button class="action-btn btn-delete" onclick="deleteBooking(${booking.id})">
                                     Delete

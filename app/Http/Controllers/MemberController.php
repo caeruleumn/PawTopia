@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class MemberController extends Controller
 {
@@ -24,8 +25,9 @@ class MemberController extends Controller
         $data = $request->validate([
             'owner_name' => 'required|string|max:255',
             'email'      => 'required|string|email|max:255|unique:members',
-            'phone'      => 'required|string|max:15|unique:members',
+            'phone'      => 'required|regex:/^[0-9]+$/|max:15|unique:members',
             'address'    => 'nullable|string|max:255',
+            'password'   => 'required|string|min:8|confirmed',
         ]);
 
         $member = Member::create([
@@ -33,6 +35,7 @@ class MemberController extends Controller
             'email'   => $data['email'],
             'phone'   => $data['phone'],
             'address' => $data['address'],
+            'password'=> Hash::make($data['password']),
             'role'    => 'member', // default setiap register jadi member
         ]);
 
@@ -46,19 +49,19 @@ class MemberController extends Controller
     }
 
     /**
-     * Proses login (pakai phone number).
+     * Proses login (pakai email + password).
      */
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'phone' => 'required|string',
+            'email'    => 'required|string|email',
+            'password' => 'required|string',
         ]);
 
-        $member = Member::where('phone', $credentials['phone'])->first();
-
-        if ($member) {
-            Auth::guard('member')->login($member);
+        if (Auth::guard('member')->attempt($credentials)) {
             $request->session()->regenerate();
+
+            $member = Auth::guard('member')->user();
 
             // ✅ cek role
             if ($member->role === 'admin') {
@@ -70,7 +73,9 @@ class MemberController extends Controller
                              ->with('success', 'Login successful! Welcome back to Pawtopia.');
         }
 
-        return back()->withErrors(['phone' => 'Phone number not found in our records.']);
+        return back()->withErrors([
+            'email' => 'Invalid email or password.',
+        ]);
     }
 
     /**

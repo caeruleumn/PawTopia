@@ -35,6 +35,10 @@ Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.s
 
 // Testimonial Routes (member only - harus login dan punya booking completed)
 Route::middleware('auth:member')->group(function () {
+    Route::get('/testimonials', function () {
+        return view('testimonials.create');
+    })->name('testimonials.create');
+
     Route::post('/testimonials', [\App\Http\Controllers\TestimonialController::class, 'store'])->name('testimonials.store');
     Route::get('/testimonials/bookings', [\App\Http\Controllers\TestimonialController::class, 'getCompletedBookings'])->name('testimonials.bookings');
 });
@@ -77,7 +81,7 @@ Route::get('/register/pets', function () {
 
 Route::get('/login', function () {
     return view('register'); // tampilkan form
-})->name('register.page');
+})->name('login.page');
 Route::post('/login', [MemberController::class, 'login'])->name('login');
 
 Route::post('/logout', [MemberController::class, 'logout'])->name('logout');

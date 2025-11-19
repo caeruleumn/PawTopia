@@ -131,6 +131,25 @@
             border-radius: 10px;
             font-size: 14px;
         }
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        .password-wrapper input {
+            width: 100%;
+            padding-right: 60px;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            font-size: 12px;
+            color: #666;
+            cursor: pointer;
+        }
         .register-button {
             display: block;
             width: 100%;
@@ -270,8 +289,16 @@
                     <div class="form-group">
                         <input type="text" name="owner_name" placeholder="Full Name" required>
                         <input type="email" name="email" placeholder="Email" required>
-                        <input type="text" name="phone" placeholder="Phone Number" required>
+                        <input type="tel" name="phone" placeholder="Phone Number" required pattern="[0-9]+" inputmode="numeric">
                         <input type="text" name="address" placeholder="Full Address" required>
+                        <div class="password-wrapper">
+                            <input type="password" id="register-password" name="password" placeholder="Password (min 8 characters)" required>
+                            <button type="button" class="password-toggle" data-target="register-password">Show</button>
+                        </div>
+                        <div class="password-wrapper">
+                            <input type="password" id="register-password-confirmation" name="password_confirmation" placeholder="Confirm Password" required>
+                            <button type="button" class="password-toggle" data-target="register-password-confirmation">Show</button>
+                        </div>
                     </div>
                 </div>
                 <p style="font-size: 13px; color: #666; text-align: center; margin: 10px 0;">You'll add your pet information in the next step</p>
@@ -291,8 +318,11 @@
                         <input type="email" id="login-email" name="email" placeholder="Enter your email" required>
                     </div>
                     <div class="form-group-horizontal">
-                        <label for="login-phone">Phone Number</label>
-                        <input type="text" id="login-phone" name="phone" placeholder="Enter your phone number" required>
+                        <label for="login-password">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+                            <button type="button" class="password-toggle" data-target="login-password">Show</button>
+                        </div>
                     </div>
                 </div>
                 <button type="submit" class="register-button">Sign In</button>
@@ -345,7 +375,27 @@ function showLogin() {
     document.getElementById("btn-register").classList.add("inactive");
     document.getElementById("btn-register").classList.remove("active");
 }
-window.onload = function () { showRegister(); };
+function setupPasswordToggles() {
+    var toggles = document.querySelectorAll('.password-toggle');
+    toggles.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var targetId = this.getAttribute('data-target');
+            var input = document.getElementById(targetId);
+            if (!input) return;
+            if (input.type === 'password') {
+                input.type = 'text';
+                this.textContent = 'Hide';
+            } else {
+                input.type = 'password';
+                this.textContent = 'Show';
+            }
+        });
+    });
+}
+window.onload = function () {
+    showRegister();
+    setupPasswordToggles();
+};
 </script>
 
 </body>

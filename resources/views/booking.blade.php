@@ -467,7 +467,7 @@
     <!-- Delivery Options -->
     <div class="section">
         <div class="section-title"><img src="{{ asset('images/In Transit.svg') }}" alt="">Delivery Options</div>
-        <div class="form-group delivery-options-row">
+        <div class="form-group">
             <div class="form-field">
                 <label style="font-weight: 600; margin-bottom: 10px;">Drop-off (Start of boarding)</label>
                 <label style="display: flex; align-items: center; margin-bottom: 8px;">
@@ -598,6 +598,9 @@
             </button>
             <button class="btn-later" onclick="payLater()">
                 Pay Later - View My Bookings
+            </button>
+            <button type="button" class="btn-later" onclick="closeModal()">
+                Close
             </button>
         </div>
 
