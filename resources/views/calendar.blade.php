@@ -426,38 +426,7 @@ td.full-book::after {
             </div>
         </div>
 
-        <!-- Availability Guide moved under calendar -->
-        <div style="margin-top: 16px; padding: 16px; background: #f8fafb; border-radius: 12px; border: 1px solid rgba(232, 180, 160, 0.2); max-width: 500px;">
-            <h4 style="margin: 0 0 12px 0; font-size: 14px; color: #5a3b2e; font-weight: 600; display: flex; align-items: center; gap: 8px;">
-                <span style="font-size:16px;">📊</span> Availability Guide
-            </h4>
-            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="display: inline-block; width: 24px; height: 24px; background: linear-gradient(135deg, #d4f4dd, #e8f9ed); border: 2px solid #4caf50; border-radius: 4px; position: relative;">
-                        <span style="position: absolute; bottom: 0; right: 2px; font-size: 12px; color: #4caf50;">✓</span>
-                    </span>
-                    <span style="color: #5a3b2e;"><b>Many slots</b> (0–49% booked)</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="display: inline-block; width: 24px; height: 24px; background: linear-gradient(135deg, #fff8e1, #fffbf0); border: 2px solid #ffa726; border-radius: 4px; position: relative;">
-                        <span style="position: absolute; bottom: 0; right: 2px; font-size: 12px; color: #ffa726;">◐</span>
-                    </span>
-                    <span style="color: #5a3b2e;"><b>Some slots</b> (50–74% booked)</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="display: inline-block; width: 24px; height: 24px; background: linear-gradient(135deg, #ffe5e5, #fff0f0); border: 2px solid #ff6b6b; border-radius: 4px; position: relative;">
-                        <span style="position: absolute; bottom: 0; right: 2px; font-size: 11px; color: #ff6b6b;">⚠</span>
-                    </span>
-                    <span style="color: #5a3b2e;"><b>Few slots</b> (75–99% booked)</span>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="display: inline-block; width: 24px; height: 24px; background: linear-gradient(135deg, #e0e0e0, #f0f0f0); border: 2px solid #999; border-radius: 4px; position: relative;">
-                        <span style="position: absolute; bottom: 0; right: 2px; font-size: 14px; color: #999;">✕</span>
-                    </span>
-                    <span style="color: #999;"><b>Fully booked</b> (100%)</span>
-                </div>
-            </div>
-        </div>
+      
     </div>
         </div>
  

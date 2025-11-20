@@ -21,6 +21,7 @@ class AdminSeeder extends Seeder
                 'phone' => '0000000000',
                 'address' => 'Pawtopia Headquarters',
                 'role' => 'admin',
+                'password' => Hash::make('admin123'),
             ]
         );
 

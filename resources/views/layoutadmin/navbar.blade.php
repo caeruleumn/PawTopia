@@ -170,7 +170,7 @@
             <li>
                 <a href="{{ url('/admin/productmanagement') }}"
                     class="{{ Request::is('admin/productmanagement*') ? 'active' : '' }}">
-                    <i class="fas fa-box"></i> Product Management
+                    <i class="fas fa-box"></i> Products
                 </a>
             </li>
             <li>
@@ -182,12 +182,12 @@
             <li>
                 <a href="{{ url('/admin/managebooking') }}"
                     class="{{ Request::is('admin/managebooking*') ? 'active' : '' }}">
-                    <i class="fas fa-edit"></i> Manage Booking
+                    <i class="fas fa-edit"></i> Bookings
                 </a>
             </li>
             <li>
                 <a href="{{ url('/admin/schedule') }}" class="{{ Request::is('admin/schedule*') ? 'active' : '' }}">
-                    <i class="fas fa-calendar-alt"></i> Daycare Schedule
+                    <i class="fas fa-calendar-alt"></i>  Schedule
                 </a>
             </li>
             <li>
